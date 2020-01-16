@@ -1,6 +1,7 @@
 class UsersController < ApplicationController
   before_action :logged_in_user, only: %i(index edit update destroy)
   before_action :find_user, except: %i(new create index)
+  before_action :correct_user, only: %i(edit update)
   before_action :admin_user, only: %i(destroy)
 
   def index
@@ -59,6 +60,10 @@ class UsersController < ApplicationController
     return if @user
     flash[:danger] = "Cannot find this user!"
     redirect_to root_path
+  end
+
+  def correct_user
+    redirect_to root_path unless @user.current_user? current_user
   end
 
   def admin_user

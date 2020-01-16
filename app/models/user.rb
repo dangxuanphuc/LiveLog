@@ -59,20 +59,20 @@ class User < ApplicationRecord
     UserMailer.account_activation(email).deliver_later
   end
 
-  # def create_reset_digest
-  #   self.reset_token = User.new_token
-  #   update_attributes reset_digest: User.digest(reset_token)
-  #   update_attributes reset_sent_at: Time.zone.now
-  # end
+  def create_reset_digest
+    self.reset_token = User.new_token
+    update_attributes reset_digest: User.digest(reset_token)
+    update_attributes reset_sent_at: Time.zone.now
+  end
 
-  # def send_password_reset_email
-  #   pass_reset = {reset_token: self.reset_token, mail: self.email}
-  #   UserMailer.password_reset(pass_reset).deliver_later
-  # end
+  def send_password_reset_email
+    pass_reset = {reset_token: self.reset_token, mail: self.email}
+    UserMailer.password_reset(pass_reset).deliver_later
+  end
 
-  # def password_reset_expired?
-  #   reset_sent_at < Settings.hours_max.hours.ago
-  # end
+  def password_reset_expired?
+    reset_sent_at < Settings.hours_max.hours.ago
+  end
 
   class << self
     def digest string
