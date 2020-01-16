@@ -1,0 +1,9 @@
+<li>
+  <%= link_to user.full_name, user %>
+  <% if user.admin? %>
+    <span>*</span>
+  <% end %>
+  <% if current_user.admin? && !user.current_user?(current_user) %>
+    <%= link_to '&times;'.html_safe, user, method: :delete, data: {confirm: "Are you sure?"} %>
+  <% end %>
+</li>

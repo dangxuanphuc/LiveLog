@@ -1,0 +1,16 @@
+<% provide :title, "Members" %>
+<h2>Members</h2>
+<% @years.each_slice(4) do |four_y| %>
+  <div class="row">
+    <% four_y.each do |y| %>
+      <div class="col-sm-3">
+        <h2><%= y %></h2>
+        <ol>
+          <% @users.where(joined: y).each do |u| %>
+            <%= render @users.where(joined: y) %>
+          <% end %>
+        </ol>
+      </div>
+    <% end %>
+  </div>
+<% end %>
