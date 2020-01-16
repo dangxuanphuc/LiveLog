@@ -5,7 +5,7 @@ services:
     environment:
       - MYSQL_ROOT_PASSWORD=123456
   redis:
-    image: redis:3.2.4-alpine
+    image: redis:5.0.7
     ports:
       - 6379:6379
   web:
@@ -20,6 +20,8 @@ services:
     depends_on:
       - db
       - redis
+    env_file:
+      - .env
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
     links:
