@@ -1,0 +1,6 @@
+Hi <%= @email[:user_name] %>,
+
+Welcome to the LiveLog! Click on the link below to activate your account:
+
+<%= link_to "Activate", edit_account_activation_url(@email[:activation_token],
+  email: @email[:mail]) %>
