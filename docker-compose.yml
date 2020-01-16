@@ -26,3 +26,13 @@ services:
       - db:mysql
     ports:
       - 8080:80
+  sidekiq:
+    build: .
+    command: bundle exec sidekiq
+    volumes:
+      - .:/app
+    depends_on:
+      - db
+      - redis
+    env_file:
+      - .env

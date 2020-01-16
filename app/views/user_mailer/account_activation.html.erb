@@ -1,0 +1,8 @@
+<h1>LiveLog</h1>
+
+<p>Hi <%= @email[:user_name] %>,</p>
+
+<p>Welcome to the LiveLog! Click on the link below to activate your account:</p>
+
+<%= link_to "Activate", edit_account_activation_url(@email[:activation_token],
+  email: @email[:mail]) %>

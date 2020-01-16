@@ -16,7 +16,9 @@ User.create!(first_name: "Phuc",
   password: "admin000",
   password_confirmation: "admin000",
   admin: true,
-  joined: nendo(Date.today)-1)
+  joined: nendo(Date.today)-1,
+  activated: true,
+  activated_at: Time.zone.now)
 
 puts "Faker is generating data ... Please wait..."
 
@@ -34,7 +36,9 @@ puts "Faker is generating data ... Please wait..."
     email: email,
     password: password,
     password_confirmation: password,
-    joined: nendo(Date.today))
+    joined: nendo(Date.today),
+    activated: true,
+    activated_at: Time.zone.now)
 end
 
 puts "Create #{User.count} users!"

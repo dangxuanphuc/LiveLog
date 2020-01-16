@@ -15,9 +15,9 @@ class UsersController < ApplicationController
   def create
     @user = User.new user_params
     if @user.save
-      log_in @user
-      flash[:success] = "#{@user.full_name} さんを追加しました"
-      redirect_to @user
+      @user.send_activation_email
+      flash[:info] = "Please check your email to activate your account."
+      redirect_to root_path
     else
       render :new
     end
@@ -59,13 +59,6 @@ class UsersController < ApplicationController
     return if @user
     flash[:danger] = "Cannot find this user!"
     redirect_to root_path
-  end
-
-  def logged_in_user
-    return if logged_in?
-    store_location
-    flash[:danger] = "Login please!"
-    redirect_to login_path
   end
 
   def admin_user
