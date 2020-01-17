@@ -2,11 +2,11 @@ class UsersController < ApplicationController
   before_action :logged_in_user, only: %i(index edit update destroy)
   before_action :find_user, except: %i(new create index)
   before_action :correct_user, only: %i(edit update)
-  before_action :admin_user, only: %i(destroy)
+  before_action :admin_or_elder_user, only: %i(new create destroy)
 
   def index
     @users = User.all.page(params[:page]).per Settings.size_page_max_length
-    @years = User.select(:joined).distinct.order(joined: :desc).map { |u| u.joined }
+    @years = User.joined_years
   end
 
   def new
@@ -14,7 +14,7 @@ class UsersController < ApplicationController
   end
 
   def create
-    @user = User.new user_params
+    @user = User.new create_user_params
     if @user.save
       @user.send_activation_email
       flash[:info] = "Please check your email to activate your account."
@@ -29,7 +29,7 @@ class UsersController < ApplicationController
   def edit; end
 
   def update
-    if @user.update_attributes user_params
+    if @user.update_attributes update_user_params
       flash[:success] = "Profile update successfully!"
       redirect_to @user
     else
@@ -48,7 +48,12 @@ class UsersController < ApplicationController
 
   private
 
-  def user_params
+  def create_user_params
+    params.require(:user).permit :first_name, :last_name,
+      :furigana, :email, :joined, :password
+  end
+
+  def update_user_params
     params.require(:user).permit :first_name, :last_name,
       :furigana, :nickname, :email, :joined, :password,
       :password_confirmation
@@ -64,9 +69,5 @@ class UsersController < ApplicationController
 
   def correct_user
     redirect_to root_path unless @user.current_user? current_user
-  end
-
-  def admin_user
-    redirect_to root_path unless current_user.admin?
   end
 end

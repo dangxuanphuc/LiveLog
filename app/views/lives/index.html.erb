@@ -1,0 +1,29 @@
+<% provide :title, 'Live List' %>
+
+<div class="page-header">
+  <h2>Live List</h2>
+</div>
+<% @lives.first.nendo.downto(@lives.last.nendo).each_slice(2) do |two_y| %>
+  <div class="row">
+    <% two_y.each do |y| %>
+      <% y_live = @lives.where(date: nendo_range(y)) %>
+      <% if y_live.exists? %>
+        <div class="col-sm-6">
+          <h2><%= y %></h2>
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Name</th>
+                <th>Place</th>
+              </tr>
+            </thead>
+            <tbody>
+              <%= render y_live %>
+            </tbody>
+          </table>
+        </div>
+      <% end %>
+    <% end %>
+  </div>
+<% end %>

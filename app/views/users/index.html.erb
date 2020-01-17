@@ -1,5 +1,7 @@
 <% provide :title, "Members" %>
-<h2>Members</h2>
+<div class="page-header">
+  <h2>Members</h2>
+</div>
 <% @years.each_slice(4) do |four_y| %>
   <div class="row">
     <% four_y.each do |y| %>

@@ -15,4 +15,13 @@ module ApplicationHelper
       date.year
     end
   end
+
+  def nendo_range year = Date.today.year
+    start = Date.new(year, 4)
+    (start...start + 1.year)
+  end
+
+  def glyphicon name, clazz = ""
+    "<span class=\"fa fa-#{name} #{clazz}\" aria-hidden=\"true\"></span> ".html_safe
+  end
 end

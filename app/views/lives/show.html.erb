@@ -1,0 +1,14 @@
+<% provide :title, @live.title %>
+<div class="page-header">
+  <h2>
+    <%= @live.name %>
+    <small>
+      <%= "#{I18n.l(@live.date)} @#{@live.place}" %>
+      <% if logged_in? && current_user.admin_or_elder? %>
+        <%= link_to glyphicon(:cog), edit_life_path(@live), title: "Edit live" %>
+        <%= link_to glyphicon(:trash), @live, method: :delete,
+          data: {confirm: "Are you sure?"}, title: "Delete" %>
+      <% end %>
+    </small>
+  </h2>
+</div>

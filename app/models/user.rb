@@ -11,7 +11,7 @@ class User < ApplicationRecord
   validates :last_name, presence: true,
     length: {maximum: Settings.lastname_max_length}
   validates :furigana, presence: true
-  validates :nickname, presence: true,
+  validates :nickname,
     length: {maximum: Settings.nickname_max_length}
   validates :email, presence: true,
     length: {maximum: Settings.email_max_length},
@@ -25,7 +25,15 @@ class User < ApplicationRecord
   has_secure_password
 
   def full_name
-    first_name + " " + last_name
+    "#{last_name} #{first_name}"
+  end
+
+  def elder?
+    joined < 2011
+  end
+
+  def admin_or_elder?
+    admin? || elder?
   end
 
   def remember
@@ -72,6 +80,10 @@ class User < ApplicationRecord
 
   def password_reset_expired?
     reset_sent_at < Settings.hours_max.hours.ago
+  end
+
+  def User.joined_years
+    User.select(:joined).distinct.order(joined: :desc).map { |u| u.joined }
   end
 
   class << self
