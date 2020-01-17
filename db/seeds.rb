@@ -12,7 +12,7 @@ User.create!(first_name: "Phuc",
   last_name: "Dang Xuan",
   furigana: "wataridori",
   nickname: "wataridori",
-  email: "admin@gmail.com",
+  email: "admin@livelog.com",
   password: "admin000",
   password_confirmation: "admin000",
   admin: true,
@@ -27,7 +27,7 @@ puts "Faker is generating data ... Please wait..."
   last_name = Faker::Name.last_name
   furigana = Faker::Name.middle_name
   nickname = Faker::Name.female_first_name
-  email = "user-#{n+1}@gmail.com"
+  email = "user-#{n+1}@livelog.com"
   password = "123456"
   User.create!(first_name: first_name,
     last_name: last_name,
@@ -42,3 +42,14 @@ puts "Faker is generating data ... Please wait..."
 end
 
 puts "Create #{User.count} users!"
+
+10.times do |n|
+  name = Faker::Company.name
+  date = Date.today
+  place = Faker::Address.street_address
+  Live.create!(name: name,
+    date: date,
+    place: place)
+end
+
+puts "Create #{Live.count} lives!"
