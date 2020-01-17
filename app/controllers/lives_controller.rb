@@ -24,7 +24,7 @@ class LivesController < ApplicationController
       if @live.save
         format.html do
           flash[:success] = "#{@live.title} を追加しました"
-          redirect_to @live, notice: 'Live was successfully created.'
+          redirect_to @live, notice: "Live was successfully created."
         end
       else
         format.html { render :new }
@@ -51,7 +51,7 @@ class LivesController < ApplicationController
     @live.destroy
     respond_to do |format|
       format.html do
-        flash[:success] = 'ライブを削除しました'
+        flash[:success] = "Delete live successfully!"
         redirect_to lives_path
       end
       format.json { head :no_content }
