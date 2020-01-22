@@ -22,5 +22,9 @@ module Livelog
     config.generators.system_tests = nil
 
     config.active_job.queue_adapter = :sidekiq
+
+    config.time_zone = "Hanoi"
+
+    config.active_record.time_zone_aware_types = [:datetime, :time]
   end
 end

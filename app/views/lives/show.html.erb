@@ -1,14 +1,52 @@
 <% provide :title, @live.title %>
-<div class="page-header">
-  <h2>
-    <%= @live.name %>
-    <small>
-      <%= "#{I18n.l(@live.date)} @#{@live.place}" %>
-      <% if logged_in? && current_user.admin_or_elder? %>
-        <%= link_to glyphicon(:cog), edit_life_path(@live), title: "Edit live" %>
-        <%= link_to glyphicon(:trash), @live, method: :delete,
-          data: {confirm: "Are you sure?"}, title: "Delete" %>
+<article>
+  <header class="page-header">
+    <h2>
+      <%= @live.name %>
+      <small><%= "#{I18n.l(@live.date)} @#{@live.place}" %></small>
+    </h2>
+  </header>
+  <% if @songs.count > 20 %>
+    <table class="table table-striped table-condensed">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Song</th>
+          <th>Artist</th>
+          <th>Members</th>
+          <% if logged_in? && current_user.admin_or_elder? %>
+            <th></th>
+          <% end %>
+        </tr>
+      </thead>
+      <tbody>
+        <%= render @songs, show_live: false %>
+      </tbody>
+    </table>
+  <% else %>
+    <ol class="set-list">
+      <% @songs.each do |song| %>
+        <li>
+          <%= logged_in? ? link_to(song.name, song) : song.name %>
+          <% if logged_in? && current_user.admin_or_elder? %>
+            <small><%= link_to glyphicon(:edit), edit_song_path(song) %></small>
+          <% end %>
+        </li>
       <% end %>
-    </small>
-  </h2>
-</div>
+    </ol>
+  <% end %>
+  <% if logged_in? && current_user.admin_or_elder? %>
+    <footer>
+      <ul class="list-inline">
+        <li><%= link_to glyphicon("plus-sign") + "Add song", new_song_path(live_id: @live.id),
+          class: "btn btn-default", role: "button" %></li>
+        <li><%= link_to glyphicon(:edit) + "Edit", edit_life_path(@live), class: "btn btn-primary", role: "button" %></li>
+        <% if @live.songs.empty? %>
+          <li><%= link_to glyphicon(:trash) + "Delete", @live, method: :delete,
+            data: {confirm: "Are you sure?"}, class: "btn btn-danger",
+            role: "button" %></li>
+        <% end %>
+      </ul>
+    </footer>
+  <% end %>
+</article>

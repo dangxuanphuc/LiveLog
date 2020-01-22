@@ -1,0 +1,52 @@
+<% provide :title, @song.name %>
+<article>
+  <header class="page-header">
+    <h2>
+      <small>
+        <%= link_to @song.live.title, @song.live %> -
+        <%= @song.time_str unless @song.time.nil? %>
+        <%= @song.order %>
+      </small><br>
+      <%= "#{@song.name} / #{@song.artist}" %>
+    </h2>
+    <% if @song.youtube_id.blank? %>
+
+    <% else %>
+      <div class="row">
+        <div class="col-sm-9">
+          <div class="embed-responsive embed-responsive-16by9">
+            <%= @song.youtube_embed %>
+          </div>
+        </div>
+        <div class="col-sm-3"></div>
+      </div>
+    <% end %>
+
+    <nav>
+      <ul class="pager">
+        <% if @song.previous.nil? %>
+          <li class="previous disabled">
+            <a href=""><span>&larr;</span>Previous</a>
+          </li>
+        <% else %>
+          <li class="previous">
+            <%= link_to @song.previous do %>
+              <span>&larr;</span> Previous
+            <% end %>
+          </li>
+        <% end %>
+        <% if @song.next.nil? %>
+          <li class="next disabled">
+            <a href="">Next <span>&rarr;</span></a>
+          </li>
+        <% else %>
+          <li class="next">
+            <%= link_to @song.next do %>
+              Next <span>&rarr;</span>
+            <% end %>
+          </li>
+        <% end %>
+      </ul>
+    </nav>
+  </header>
+</article>

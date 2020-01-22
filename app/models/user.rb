@@ -22,6 +22,8 @@ class User < ApplicationRecord
   validates :password, presence: true,
     length: {minimum: Settings.password_min_length}, allow_nil: true
 
+  scope :distinct_joined, -> { unscoped.select(:joined).distinct.order(joined: :desc) }
+
   has_secure_password
 
   def full_name
@@ -82,10 +84,6 @@ class User < ApplicationRecord
     reset_sent_at < Settings.hours_max.hours.ago
   end
 
-  def User.joined_years
-    User.select(:joined).distinct.order(joined: :desc).map { |u| u.joined }
-  end
-
   class << self
     def digest string
       cost = if ActiveModel::SecurePassword.min_cost
@@ -104,7 +102,7 @@ class User < ApplicationRecord
   private
 
   def email_downcase
-    self.email = email.downcase
+    self.email = email.downcase unless email.nil?
   end
 
   def create_activation_digest

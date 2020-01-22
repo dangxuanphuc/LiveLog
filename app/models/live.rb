@@ -1,6 +1,10 @@
 class Live < ApplicationRecord
+  has_many :songs, dependent: :restrict_with_exception
+
   validates :name, presence: true, uniqueness: {scope: :date}
   validates :date, presence: true
+
+  default_scope { order(date: :desc) }
 
   def title
     "#{date.year} #{name}"

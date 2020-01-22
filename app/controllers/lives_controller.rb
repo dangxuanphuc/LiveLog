@@ -4,21 +4,21 @@ class LivesController < ApplicationController
   before_action :admin_or_elder_user, except: %i(index show)
 
   def index
-    @lives = Live.order(date: :desc)
+    @lives = Live.all
   end
 
   def show
+    @songs = @live.songs
   end
 
   def new
     @live = Live.new
   end
 
-  def edit
-  end
+  def edit; end
 
   def create
-    @live = Live.new(live_params)
+    @live = Live.new live_params
 
     respond_to do |format|
       if @live.save
@@ -48,23 +48,28 @@ class LivesController < ApplicationController
   end
 
   def destroy
-    @live.destroy
-    respond_to do |format|
-      format.html do
-        flash[:success] = "Delete live successfully!"
-        redirect_to lives_path
-      end
-      format.json { head :no_content }
+    begin
+      @live.destroy
+    rescue ActiveRecord::DeleteRestrictionError => e
+      flash.now[:danger] = e.message
+      render :show
+    else
+      flash[:success] = "Delete live successfully!"
+      redirect_to lives_path
     end
   end
 
   private
 
   def set_live
-    @live = Live.find(params[:id])
+    @live = Live.find_by id: params[:id]
+
+    return if @live
+    flash[:danger] = "Cannot find this live"
+    redirect_to root_path
   end
 
   def live_params
-    params.require(:live).permit(:name, :date, :place)
+    params.require(:live).permit :name, :date, :place
   end
 end

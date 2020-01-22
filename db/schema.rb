@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_01_17_035211) do
+ActiveRecord::Schema.define(version: 2020_01_19_091551) do
 
   create_table "lives", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
     t.string "name"
@@ -18,7 +18,20 @@ ActiveRecord::Schema.define(version: 2020_01_17_035211) do
     t.string "place"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["date"], name: "index_lives_on_date"
     t.index ["name", "date"], name: "index_lives_on_name_and_date", unique: true
+  end
+
+  create_table "songs", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
+    t.string "name"
+    t.string "artist"
+    t.string "youtube_id"
+    t.integer "order"
+    t.time "time"
+    t.bigint "live_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["live_id"], name: "index_songs_on_live_id"
   end
 
   create_table "users", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
@@ -39,6 +52,8 @@ ActiveRecord::Schema.define(version: 2020_01_17_035211) do
     t.string "reset_digest"
     t.datetime "reset_sent_at"
     t.index ["email"], name: "index_users_on_email", unique: true
+    t.index ["furigana"], name: "index_users_on_furigana"
   end
 
+  add_foreign_key "songs", "lives", column: "live_id"
 end
