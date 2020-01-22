@@ -1,0 +1,15 @@
+<tr>
+  <% if show_live %>
+    <td><%= song.live.title %></td>
+  <% end %>
+  <td>
+    <%= song.time_str unless song.time.blank? %>
+    <%= song.order %>
+  </td>
+  <td><%= logged_in? ? link_to(song.name, song) : song.name %></td>
+  <td><%= song.artist %></td>
+  <td></td>
+  <% if logged_in? && current_user.admin_or_elder? %>
+    <%= link_to glyphicon(:edit), edit_song_path(song) %>
+  <% end %>
+</tr>

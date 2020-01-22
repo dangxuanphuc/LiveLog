@@ -16,6 +16,13 @@
         email: メールアドレス
         joined: 入部年度
         password: パスワード
+      song:
+        name: 曲名
+        artist: アーティスト名
+        youtube_id: YouTube URL
+        live_id: ライブ
+        order: 曲順
+        time: 時間
     date:
       abbr_day_names:
       - 日

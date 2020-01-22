@@ -11,4 +11,5 @@ Rails.application.routes.draw do
   resources :lives
   resources :account_activations, only: :edit
   resources :password_resets, only: %i(new create edit update)
+  resources :songs, only: %i(show new create edit update destroy)
 end

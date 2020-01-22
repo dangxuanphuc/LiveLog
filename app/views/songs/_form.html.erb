@@ -1,0 +1,51 @@
+<%= form_for(@song, html: {class: "form-horizontal well"}) do |f| %>
+  <%= render "shared/error_messages", object: f.object %>
+  <div class="form-group">
+    <%= f.label :live_id, class: "col-sm-3 control-label" %>
+    <div class="col-sm-9">
+      <%= f.collection_select :live_id, Live.all, :id, :title, {}, {class: "form-control"} %>
+    </div>
+  </div>
+  <div class="form-group">
+    <%= f.label :order, class: "col-sm-3 control-label" %>
+    <div class="col-sm-9">
+      <%= f.number_field :order, class: "form-control", placeholder: "1" %>
+    </div>
+  </div>
+  <% if @song.live.name.include?("NF") %>
+    <div class="form-group">
+      <%= f.label :time, class: "col-sm-3 control-label" %>
+      <div class="col-sm-9">
+        <%= f.time_field :time, class: "form-control", placeholder: "10:00" %>
+      </div>
+    </div>
+  <% end %>
+  <div class="form-group">
+    <%= f.label :name, class: "col-sm-3 control-label" %>
+    <div class="col-sm-9">
+      <%= f.text_field :name, class: "form-control", placeholder: "Tears in Heaven" %>
+    </div>
+  </div>
+  <div class="form-group">
+    <%= f.label :artist, class: "col-sm-3 control-label" %>
+    <div class="col-sm-9">
+      <%= f.text_field :artist, class: "form-control", placeholder: "Eric Clapton" %>
+    </div>
+  </div>
+  <div class="form-group">
+    <%= f.label :youtube_id, class: "col-sm-3 control-label" %>
+    <div class="col-sm-9">
+      <%= f.text_field :youtube_id, class: "form-control", value: @song.youtube_url, placeholder: "https://www.youtube.com/watch?v=5Vr1vcsO1qI" %>
+    </div>
+  </div>
+  <div class="form-group">
+    <div class="col-sm-offset-3 col-sm-9">
+      <%= f.submit yield(:button_text), class: "btn btn-primary" %>
+      <% unless @song.id.nil? %>
+        <%= link_to glyphicon(:trash) + "Delete", @song, method: :delete,
+          data: {confirm: "Are you sure?"}, class: "btn btn-danger pull-right",
+          role: "button" %>
+      <% end %>
+    </div>
+  </div>
+<% end %>
