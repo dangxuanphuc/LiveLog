@@ -1,0 +1,14 @@
+<% provide :title, "Song Search" %>
+<header class="page-header">
+  <h2>Song Search</h2>
+</header>
+<%= form_tag "", method: "get", class: "form-inline well" do %>
+  <div class="form-group">
+    <%= text_field_tag :q, params[:q], {class: "form-control", placeholder: "Song name / Artist name"} %>
+  </div>
+  <%= button_tag glyphicon(:search) + "Search", class: "btn btn-primary" %>
+<% end %>
+<p class="text-right">
+  <%= page_entries_info %>
+</p>
+<%= render "songs/songs_table", songs: @songs, show_live: true %>

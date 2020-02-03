@@ -8,6 +8,7 @@
         <%= '-' unless @song.order.blank? %>
         <%= @song.time_str unless @song.time.blank? %>
         <%= @song.order %>
+        <%= render "link_to_edit", song: @song %>
       </small><br>
     </h2>
     <% if @song.youtube_id.blank? %>
@@ -30,28 +31,16 @@
     <% end %>
     <nav>
       <ul class="pager">
-        <% if @song.previous.nil? %>
-          <li class="previous disabled">
-            <a href=""><span>&larr;</span>Previous</a>
-          </li>
-        <% else %>
-          <li class="previous">
-            <%= link_to @song.previous do %>
-              <span>&larr;</span> Previous
-            <% end %>
-          </li>
-        <% end %>
-        <% if @song.next.nil? %>
-          <li class="next disabled">
-            <a href="">Next <span>&rarr;</span></a>
-          </li>
-        <% else %>
-          <li class="next">
-            <%= link_to @song.next do %>
-              Next <span>&rarr;</span>
-            <% end %>
-          </li>
-        <% end %>
+        <li class="previous <%= @song.previous.nil? ? 'disabled' : '' %>">
+          <%= link_to @song.previous do %>
+            <span>&larr; Previous</span>
+          <% end %>
+        </li>
+        <li class="next <%= @song.next.nil? ? 'disabled' : '' %>">
+          <%= link_to @song.next do %>
+            <span>Next &rarr;</span>
+          <% end %>
+        </li>
       </ul>
     </nav>
   </header>

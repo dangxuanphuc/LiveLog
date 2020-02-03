@@ -17,7 +17,12 @@ class Song < ApplicationRecord
   validates :youtube_id, format: {with: VALID_YOUTUBE_REGEX}, allow_blank: true
   before_save :extract_youtube_id
 
-  default_scope { includes(:live).order("lives.date DESC", :order) }
+  default_scope { includes(:live).order("lives.date DESC", :time, :order) }
+
+  def Song.search query, page
+    q = "%#{query}%"
+    where("songs.name ILIKE ? OR artist ILIKE ?", q, q).paginate(page: page)
+  end
 
   def extract_youtube_id
     unless youtube_id.blank?
@@ -39,10 +44,10 @@ class Song < ApplicationRecord
   end
 
   def previous
-    Song.find_by(id: id - 1) unless order.blank?
+    Song.where('lives.id = ? AND (songs.order < ? OR songs.time < ?)', live.id, order, time).last unless order.blank?
   end
 
   def next
-    Song.find_by(id: id + 1) unless order.blank?
+    Song.where('lives.id = ? AND (songs.order > ? OR songs.time > ?)', live.id, order, time).first unless order.blank?
   end
 end
