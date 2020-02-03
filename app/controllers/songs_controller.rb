@@ -33,7 +33,7 @@ class SongsController < ApplicationController
   end
 
   def destroy
-    # live = @song.live
+    live = @song.live
     @song.destroy
     flash[:success] = "Delete song successfully!"
     redirect_back_or live

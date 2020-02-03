@@ -10,7 +10,9 @@
       <%= "#{@song.name} / #{@song.artist}" %>
     </h2>
     <% if @song.youtube_id.blank? %>
-
+      <ul id="player-list" class="list-inline">
+        <%= render @song.playings %>
+      </ul>
     <% else %>
       <div class="row">
         <div class="col-sm-9">
@@ -18,7 +20,11 @@
             <%= @song.youtube_embed %>
           </div>
         </div>
-        <div class="col-sm-3"></div>
+        <div class="col-sm-3">
+          <ul id="player-list" class="list-unstyled">
+            <%= render @song.playings %>
+          </ul>
+        </div>
       </div>
     <% end %>
 

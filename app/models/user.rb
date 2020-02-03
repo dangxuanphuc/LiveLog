@@ -6,6 +6,9 @@ class User < ApplicationRecord
   before_save :email_downcase
   before_create :create_activation_digest
 
+  has_many :playings, dependent: :restrict_with_exception
+  has_many :songs, through: :playings
+
   validates :first_name, presence: true,
     length: {maximum: Settings.firstname_max_length}
   validates :last_name, presence: true,
@@ -26,8 +29,16 @@ class User < ApplicationRecord
 
   has_secure_password
 
-  def full_name
-    "#{last_name} #{first_name}"
+  def full_name logged_in = true
+    if logged_in
+      nickname.blank? ? "#{last_name} #{first_name}" : "#{last_name} #{first_name} (#{nickname})"
+    else
+      handle
+    end
+  end
+
+  def handle
+    nickname.blank? ? last_name : nickname
   end
 
   def elder?
