@@ -1,7 +1,23 @@
-<div class="jumbotron">
-  <h1><%= image_tag "logo.png", alt: "LiveLog logo", class: "img-responsive center-block" %></h1>
-</div>
-<p class="text-center">
-  京都大学を中心に活動するアコースティック軽音サークル<br>
-  「<a href="http://ku-unplugged.net/" target="_blank">京大アンプラグド</a>」のセットリスト検索システムです。
-</p>
+<header class="jumbotron">
+  <div class="row">
+    <div class="col-sm-4">
+      <%= image_tag "logo.png", alt: "LiveLog logo", class: "img-responsive center-block" %>
+    </div>
+    <div class="col-sm-8 text-center">
+      <h2>LiveLog</h2>
+      <p>
+        京都大学を中心に活動するアコースティック軽音サークル<br>
+        「<a href="http://ku-unplugged.net/" target="_blank">京大アンプラグド</a>」のセットリスト検索システムです。
+      </p>
+      <%= form_tag "/songs", method: "get", class: "form-inline" do %>
+        <div class="form-group">
+          <%= text_field_tag :q, "", {class: "form-control", placeholder: "Song name / Artist name"} %>
+        </div>
+        <%= button_tag glyphicon(:search) + "Search", class: "btn btn-primary" %>
+      <% end %>
+    </div>
+  </div>
+</header>
+<%= render "songs/songs_table", songs: @songs, show_live: true %>
+
+<%= paginate @songs, themes: "twitter-bootstrap-4" %>

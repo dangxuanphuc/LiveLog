@@ -1,0 +1,19 @@
+<div class="table-responsive">
+  <table class="table table-striped table-condensed">
+    <thead>
+      <tr>
+        <% if show_live %>
+          <th>Live</th>
+        <% end %>
+        <th>#</th>
+        <th>Song</th>
+        <th>Artist</th>
+        <th>Members</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <%= render songs, show_live: true %>
+    </tbody>
+  </table>
+</div>
