@@ -2,12 +2,13 @@
 <article>
   <header class="page-header">
     <h2>
+      <%= "#{@song.name} / #{@song.artist}" %>
       <small>
-        <%= link_to @song.live.title, @song.live %> -
-        <%= @song.time_str unless @song.time.nil? %>
+        <%= link_to @song.live.title, @song.live %>
+        <%= '-' unless @song.order.blank? %>
+        <%= @song.time_str unless @song.time.blank? %>
         <%= @song.order %>
       </small><br>
-      <%= "#{@song.name} / #{@song.artist}" %>
     </h2>
     <% if @song.youtube_id.blank? %>
       <ul id="player-list" class="list-inline">
@@ -27,7 +28,6 @@
         </div>
       </div>
     <% end %>
-
     <nav>
       <ul class="pager">
         <% if @song.previous.nil? %>
