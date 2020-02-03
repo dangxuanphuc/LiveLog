@@ -38,12 +38,22 @@
       <%= f.text_field :youtube_id, class: "form-control", value: @song.youtube_url, placeholder: "https://www.youtube.com/watch?v=5Vr1vcsO1qI" %>
     </div>
   </div>
+  <div id="playings-fields">
+    <%= f.fields_for :playings do |builder| %>
+      <%= render "playings_fields", f: builder %>
+    <% end %>
+  </div>
+  <div class="form-group">
+    <div class="col-sm-3 control-label">
+      <%= button_to_add_member glyphicon("plus"), f %>
+    </div>
+  </div>
   <div class="form-group">
     <div class="col-sm-offset-3 col-sm-9">
       <%= f.submit yield(:button_text), class: "btn btn-primary" %>
-      <% unless @song.id.nil? %>
+      <% if @song.persisted? && current_user.admin_or_elder? %>
         <%= link_to glyphicon(:trash) + "Delete", @song, method: :delete,
-          data: {confirm: "Are you sure?"}, class: "btn btn-danger pull-right",
+          data: {confirm: "Are you sure?"}, class: "btn btn-danger float-right",
           role: "button" %>
       <% end %>
     </div>

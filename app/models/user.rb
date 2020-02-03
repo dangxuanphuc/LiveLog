@@ -4,6 +4,7 @@ class User < ApplicationRecord
   attr_reader :remember_token
   attr_accessor :activation_token, :reset_token
   before_save :email_downcase
+  before_save :remove_spaces_from_furigana
   before_create :create_activation_digest
 
   has_many :playings, dependent: :restrict_with_exception
@@ -25,6 +26,7 @@ class User < ApplicationRecord
   validates :password, presence: true,
     length: {minimum: Settings.password_min_length}, allow_nil: true
 
+  default_scope { order("joined DESC") }
   scope :distinct_joined, -> { unscoped.select(:joined).distinct.order(joined: :desc) }
 
   has_secure_password
@@ -47,6 +49,10 @@ class User < ApplicationRecord
 
   def admin_or_elder?
     admin? || elder?
+  end
+
+  def played? song
+    songs.include? song
   end
 
   def remember
@@ -119,5 +125,9 @@ class User < ApplicationRecord
   def create_activation_digest
     self.activation_token = User.new_token
     self.activation_digest = User.digest activation_token
+  end
+
+  def remove_spaces_from_furigana
+    self.furigana = furigana.gsub(/\s+/, '')
   end
 end

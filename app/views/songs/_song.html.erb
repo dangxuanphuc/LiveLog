@@ -13,7 +13,7 @@
       <%= render song.playings %>
     </ul>
   </td>
-  <% if logged_in? && current_user.admin_or_elder? %>
+  <% if logged_in? && (current_user.admin_or_elder? || current_user.played?(song)) %>
     <%= link_to glyphicon(:edit), edit_song_path(song) %>
   <% end %>
 </tr>
