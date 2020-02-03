@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_01_19_091551) do
+ActiveRecord::Schema.define(version: 2020_02_03_015154) do
 
   create_table "lives", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
     t.string "name"
@@ -20,6 +20,17 @@ ActiveRecord::Schema.define(version: 2020_01_19_091551) do
     t.datetime "updated_at", precision: 6, null: false
     t.index ["date"], name: "index_lives_on_date"
     t.index ["name", "date"], name: "index_lives_on_name_and_date", unique: true
+  end
+
+  create_table "playings", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
+    t.string "inst"
+    t.bigint "user_id", null: false
+    t.bigint "song_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["song_id"], name: "index_playings_on_song_id"
+    t.index ["user_id", "song_id"], name: "index_playings_on_user_id_and_song_id", unique: true
+    t.index ["user_id"], name: "index_playings_on_user_id"
   end
 
   create_table "songs", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
@@ -55,5 +66,7 @@ ActiveRecord::Schema.define(version: 2020_01_19_091551) do
     t.index ["furigana"], name: "index_users_on_furigana"
   end
 
+  add_foreign_key "playings", "songs"
+  add_foreign_key "playings", "users"
   add_foreign_key "songs", "lives", column: "live_id"
 end

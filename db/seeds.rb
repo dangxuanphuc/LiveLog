@@ -53,7 +53,7 @@ end
 puts "Create #{Live.count} lives!"
 
 lives = Live.order(:created_at).take(10)
-21.times do |n|
+19.times do |n|
   name = Faker::Music.album
   artist = Faker::Artist.name
   youtube_id = "https://www.youtube.com/watch?v=5Vr1vcsO1qI"

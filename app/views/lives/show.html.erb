@@ -24,13 +24,17 @@
       </tbody>
     </table>
   <% else %>
-    <ol class="set-list">
+    <ol id="set-list">
       <% @songs.each do |song| %>
         <li>
           <%= logged_in? ? link_to(song.name, song) : song.name %>
+          <%= "/ #{song.artist}" %>
           <% if logged_in? && current_user.admin_or_elder? %>
             <small><%= link_to glyphicon(:edit), edit_song_path(song) %></small>
           <% end %>
+          <ul class="list-inline">
+            <%= render song.playings %>
+          </ul>
         </li>
       <% end %>
     </ol>
@@ -41,10 +45,9 @@
         <li><%= link_to glyphicon("plus-sign") + "Add song", new_song_path(live_id: @live.id),
           class: "btn btn-default", role: "button" %></li>
         <li><%= link_to glyphicon(:edit) + "Edit", edit_life_path(@live), class: "btn btn-primary", role: "button" %></li>
-        <% if @live.songs.empty? %>
+        <% if @songs.empty? %>
           <li><%= link_to glyphicon(:trash) + "Delete", @live, method: :delete,
-            data: {confirm: "Are you sure?"}, class: "btn btn-danger",
-            role: "button" %></li>
+            class: "btn btn-danger", role: "button" %></li>
         <% end %>
       </ul>
     </footer>

@@ -24,7 +24,7 @@ class LivesController < ApplicationController
       if @live.save
         format.html do
           flash[:success] = "#{@live.title} を追加しました"
-          redirect_to @live, notice: "Live was successfully created."
+          redirect_to @live
         end
       else
         format.html { render :new }
@@ -35,7 +35,7 @@ class LivesController < ApplicationController
 
   def update
     respond_to do |format|
-      if @live.update(live_params)
+      if @live.update_attributes live_params
         format.html do
           flash[:success] = "#{@live.title} を更新しました"
           redirect_to @live
