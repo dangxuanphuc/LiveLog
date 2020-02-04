@@ -2,7 +2,7 @@ class UsersController < ApplicationController
   before_action :logged_in_user, only: %i(index edit update destroy)
   before_action :find_user, except: %i(new create index)
   before_action :correct_user, only: %i(edit update)
-  before_action :admin_or_elder_user, only: %i(new create destroy)
+  before_action :admin_or_elder_user, only: %i(destroy)
 
   def index
     @users = User.all.page(params[:page]).per Settings.size_page_max_length

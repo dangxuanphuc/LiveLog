@@ -1,0 +1,57 @@
+<div class="form-group">
+  <%= f.label :first_name, class: "col-sm-3 control-label" %>
+  <div class="col-sm-9">
+    <%= f.text_field :first_name, class: "form-control", placeholder: "Phúc", required: true %>
+  </div>
+</div>
+<div class="form-group">
+  <%= f.label :last_name, class: "col-sm-3 control-label" %>
+  <div class="col-sm-9">
+    <%= f.text_field :last_name, class: "form-control", placeholder: "Đặng Xuân", required: true %>
+  </div>
+</div>
+<div class="form-group">
+  <%= f.label :furigana, class: "col-sm-3 control-label" %>
+  <div class="col-sm-9">
+    <%= f.text_field :furigana, class: "form-control", placeholder: "furigana", required: true %>
+  </div>
+</div>
+<% if full %>
+  <div class="form-group">
+    <%= f.label :nickname, class: "col-sm-3 control-label" %>
+    <div class="col-sm-9">
+      <%= f.text_field :nickname, class: "form-control", placeholder: "nickname", required: true %>
+    </div>
+  </div>
+<% end %>
+<div class="form-group">
+  <%= f.label :email, class: "col-sm-3 control-label" %>
+  <div class="col-sm-9">
+    <%= f.email_field :email, class: "form-control", placeholder: "example@livelog.com", required: true %>
+  </div>
+</div>
+<div class="form-group">
+  <%= f.label :joined, class: "col-sm-3 control-label" %>
+  <div class="col-sm-9">
+    <%= f.select :joined, (1995..nendo).to_a.reverse, {}, {class: "form-control"} %>
+  </div>
+</div>
+<div class="form-group">
+  <%= f.label :password, class: "col-sm-3 control-label" %>
+  <div class="col-sm-9">
+    <%= f.password_field :password, class: "form-control", required: true %>
+  </div>
+</div>
+<% if full %>
+  <div class="form-group">
+    <%= f.label :password_confirmation, class: "col-sm-3 control-label" %>
+    <div class="col-sm-9">
+      <%= f.password_field :password_confirmation, class: "form-control", required: true %>
+    </div>
+  </div>
+<% end %>
+<div class="form-group">
+  <div class="col-sm-offset-3 col-sm-9">
+    <%= f.submit yield(:button_text), class: "btn btn-primary" %>
+  </div>
+</div>
