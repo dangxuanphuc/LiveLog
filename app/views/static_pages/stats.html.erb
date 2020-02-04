@@ -104,16 +104,24 @@
             曲を演奏しています
           </p>
         </div>
-        <ul class="list-group">
-          <% @formations.each do |formation, count| %>
-            <li class="list-group-item">
-              <span class="badge">
-                <%= (count / @count.to_f * 100).round(1) %>
-              </span>
-              <%= "#{formation}人" %>
-            </li>
-          <% end %>
-        </ul>
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>人数</th>
+              <th>パーセント</th>
+              <th>曲数</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @formations.each do |formation, count| %>
+              <tr>
+                <td><%= "#{formation}人" %></td>
+                <td><%= (count / @count.to_f * 100).round(1) %></td>
+                <td><span class="badge"><%= count %></span></td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
       </section>
     </div>
   </div>

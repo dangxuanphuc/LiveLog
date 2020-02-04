@@ -3,15 +3,15 @@ class Playing < ApplicationRecord
   belongs_to :song
 
   scope :count_insts, -> { group(:inst).count(:id) }
-  scope :count_members, -> { group(:song_id).count(:id) }
+  scope :count_members_per_song, -> { group(:song_id).count(:id) }
   before_save :format_inst
 
   validates :user_id, presence: true
   validates :song, presence: true
 
   def Playing.resolve_insts inst_counts
-    singles = inst_counts.reject { |inst, count| inst.include?("&") || inst.blank? }
-    multis = inst_counts.select { |inst, count| inst.include?("&") }
+    singles = inst_counts.reject { |inst, count| inst.blank? || inst.include?("&") }
+    multis = inst_counts.select { |inst, count| !inst.blank? && inst.include?("&") }
     resolved = multis.each_with_object(Hash.new(0)) do |(insts, count), hash|
       insts.split("&").each { |inst| hash[inst] += count }
     end
