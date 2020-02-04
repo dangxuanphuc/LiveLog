@@ -44,10 +44,10 @@ class Song < ApplicationRecord
   end
 
   def previous
-    Song.where('lives.id = ? AND (songs.order < ? OR songs.time < ?)', live.id, order, time).last unless order.blank?
+    Song.where("lives.id = ? AND (songs.order < ? OR songs.time < ?)", live.id, order, time).last unless order.blank?
   end
 
   def next
-    Song.where('lives.id = ? AND (songs.order > ? OR songs.time > ?)', live.id, order, time).first unless order.blank?
+    Song.where("lives.id = ? AND (songs.order > ? OR songs.time > ?)", live.id, order, time).first unless order.blank?
   end
 end

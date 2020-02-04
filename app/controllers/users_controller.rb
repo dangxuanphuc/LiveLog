@@ -6,7 +6,7 @@ class UsersController < ApplicationController
 
   def index
     @users = User.all.page(params[:page]).per Settings.size_page_max_length
-    @years = @users.distinct_joined.map { |u| u.joined }
+    @years = @users.distinct_joined
   end
 
   def new
