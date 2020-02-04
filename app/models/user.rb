@@ -39,6 +39,10 @@ class User < ApplicationRecord
     end
   end
 
+  def kana
+    furigana.gsub(/\s+/, '')
+  end
+
   def handle
     nickname.blank? ? last_name : nickname
   end

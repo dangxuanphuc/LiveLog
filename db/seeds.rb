@@ -52,7 +52,8 @@ puts "Create #{User.count} users!"
 end
 puts "Create #{Live.count} lives!"
 
-lives = Live.order(:created_at).take(10)
+users = User.order(:created_at).take(5)
+lives = Live.order(:created_at).take(5)
 21.times do |n|
   name = Faker::Music.album
   artist = Faker::Artist.name
@@ -63,6 +64,10 @@ lives = Live.order(:created_at).take(10)
     artist: artist,
     youtube_id: youtube_id,
     order: order,
-    time: time) }
+    time: time,
+    playings_attributes: users.map { |p|
+      {user_id: User.find_by(furigana: p.kana, joined: nendo(Date.today)).id,
+      inst: n}}) }
 end
 puts "Create #{Song.count} songs!"
+puts "Create #{Playing.count} playings!"
