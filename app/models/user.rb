@@ -25,6 +25,8 @@ class User < ApplicationRecord
     numericality: {greater_than: Settings.year_joined}
   validates :password, presence: true,
     length: {minimum: Settings.password_min_length}, allow_nil: true
+  validates :url, format: /\A#{URI::regexp(%w(http https))}\z/,
+    allow_blank: true
 
   default_scope { order("joined DESC") }
   scope :distinct_joined, -> { unscoped.select(:joined).distinct.order(joined: :desc).pluck(:joined) }

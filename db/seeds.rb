@@ -29,6 +29,8 @@ puts "Faker is generating data ... Please wait..."
   nickname = Faker::Name.female_first_name
   email = "user-#{n+1}@livelog.com"
   password = "123456"
+  url = "https://user-#{n+1}.livelog.com"
+  intro = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris gravida tortor sed felis lacinia consectetur."
   User.create!(first_name: first_name,
     last_name: last_name,
     furigana: furigana,
@@ -37,6 +39,9 @@ puts "Faker is generating data ... Please wait..."
     password: password,
     password_confirmation: password,
     joined: nendo(Date.today),
+    public: true,
+    url: url,
+    intro: intro,
     activated: true,
     activated_at: Time.zone.now)
 end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_02_03_015154) do
+ActiveRecord::Schema.define(version: 2020_02_04_074307) do
 
   create_table "lives", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
     t.string "name"
@@ -62,6 +62,9 @@ ActiveRecord::Schema.define(version: 2020_02_03_015154) do
     t.datetime "activated_at"
     t.string "reset_digest"
     t.datetime "reset_sent_at"
+    t.boolean "public", default: false
+    t.string "url"
+    t.text "intro"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["furigana"], name: "index_users_on_furigana"
   end

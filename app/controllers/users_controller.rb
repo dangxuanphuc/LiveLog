@@ -58,7 +58,7 @@ class UsersController < ApplicationController
   def update_user_params
     params.require(:user).permit :first_name, :last_name,
       :furigana, :nickname, :email, :joined, :password,
-      :password_confirmation
+      :password_confirmation, :url, :intro, :public
   end
 
   def find_user

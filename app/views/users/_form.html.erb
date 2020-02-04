@@ -20,22 +20,56 @@
   <div class="form-group">
     <%= f.label :nickname, class: "col-sm-3 control-label" %>
     <div class="col-sm-9">
-      <%= f.text_field :nickname, class: "form-control", placeholder: "nickname", required: true %>
+      <%= f.text_field :nickname, class: "form-control",
+        placeholder: "nickname", required: true %>
     </div>
   </div>
 <% end %>
 <div class="form-group">
   <%= f.label :email, class: "col-sm-3 control-label" %>
   <div class="col-sm-9">
-    <%= f.email_field :email, class: "form-control", placeholder: "example@livelog.com", required: true %>
+    <%= f.email_field :email, class: "form-control",
+      placeholder: "example@livelog.com", required: true %>
   </div>
 </div>
 <div class="form-group">
   <%= f.label :joined, class: "col-sm-3 control-label" %>
   <div class="col-sm-9">
-    <%= f.select :joined, (1995..nendo).to_a.reverse, {}, {class: "form-control"} %>
+    <%= f.select :joined, (1995..nendo).to_a.reverse,
+      {}, {class: "form-control"} %>
   </div>
 </div>
+<% if full %>
+  <div class="form-group">
+    <%= f.label :url, class: "col-sm-3 control-label" %>
+    <div class="col-sm-9">
+      <%= f.text_field :url, class: "form-control",
+        placeholder: "https://livelog.com/" %>
+    </div>
+  </div>
+  <div class="form-group">
+    <%= f.label :intro, class: "col-sm-3 control-label" %>
+    <div class="col-sm-9">
+      <%= f.text_area :intro, class: "form-control", rows: "3",
+        placeholder: "Lorem ipsum dolor sit amet" %>
+    </div>
+  </div>
+  <div class="form-group">
+    <div class="col-sm-9">
+      <label class="radio-inline">
+        <%= f.radio_button :public, "true" %> Public
+      </label>
+      <label class="radio-inline">
+        <%= f.radio_button :public, "false" %> Private
+      </label>
+      <br><small class="help-block">
+        「公開」にしても，名前とメールアドレスが公開されることはありません。
+        <br>
+        ただし，ニックネームが存在しない場合，姓は公開されます
+      </small>
+    </div>
+  </div>
+<% end %>
 <div class="form-group">
   <%= f.label :password, class: "col-sm-3 control-label" %>
   <div class="col-sm-9">
