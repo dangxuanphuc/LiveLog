@@ -27,7 +27,7 @@ class User < ApplicationRecord
     length: {minimum: Settings.password_min_length}, allow_nil: true
 
   default_scope { order("joined DESC") }
-  scope :distinct_joined, -> { unscoped.select(:joined).distinct.order(joined: :desc) }
+  scope :distinct_joined, -> { unscoped.select(:joined).distinct.order(joined: :desc).pluck(:joined) }
 
   has_secure_password
 

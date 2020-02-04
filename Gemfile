@@ -6,7 +6,7 @@ ruby "2.7.0"
 gem "bcrypt"
 gem "bootsnap", ">= 1.4.2", require: false
 gem "bootstrap"
-gem "bootstrap-kaminari-views"
+gem "bootstrap4-kaminari-views"
 gem "config"
 gem "faker"
 gem "figaro"
