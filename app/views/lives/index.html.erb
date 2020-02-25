@@ -2,7 +2,7 @@
 <header class="page-header">
   <h2>Live List</h2>
 </header>
-<% @lives.first.nendo.downto(@lives.last.nendo).each_slice(2) do |two_y| %>
+<% Live.years.each_slice(2) do |two_y| %>
   <div class="row">
     <% two_y.each do |y| %>
       <% y_live = @lives.where(date: nendo_range(y)) %>

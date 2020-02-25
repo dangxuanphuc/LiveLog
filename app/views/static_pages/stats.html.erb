@@ -9,7 +9,7 @@
   <% if logged_in? %>
     <aside class="form-inline well well-sm">
       <%= select_tag :y,
-        options_for_select(Live.select(:date).pluck(:date).map(&:year).uniq, selected: params[:y]),
+        options_for_select(Live.years, selected: params[:y]),
         class: "form-control",
         onchange: "location.href='#{request.path}?y=' + $(this).val();" %>
       <%= label_tag :y, "年度の情報を見る" %>
@@ -25,104 +25,20 @@
     <% end %>
     <br>
     この1年間に
-    <mark><%= @member_count.size %></mark>
+    <% members_count = @playings.group(:user_id).count %>
+    <mark><%= members_count.size %></mark>
     人のメンバーで
-    <mark><%= @count %></mark>
+    <mark><%= @songs.count %></mark>
     曲を演奏しました
   </p>
 
   <div class="row">
-    <div class="col-md-4 col-sm-6">
-      <section class="panel panel-default">
-        <header class="panel-heading">
-          <h2 class="panel-title">演奏された楽器</h2>
-        </header>
-        <div class="panel-body">
-          <p class="lead">
-            <mark><%= @insts.size %></mark>
-            種類の楽器が演奏されました
-          </p>
-          <ul class="list-inline lead">
-            <% @insts.each do |inst, count| %>
-              <li>
-                <%= inst %>
-                <span class="badge"><%= count %></span>
-              </li>
-            <% end %>
-          </ul>
-        </div>
-      </section>
-    </div>
-
-    <div class="col-md-4 col-sm-6">
-      <section class="panel panel-default">
-        <header class="panel-heading">
-          <h2 class="panel-title">カバーしたアーティスト</h2>
-        </header>
-        <div class="panel-body">
-          <p class="lead">
-            <mark><%= @artists.size %></mark>
-            組のアーティストの曲が演奏されました
-          </p>
-          <p>特に次のアーティストが人気です</p>
-        </div>
-        <ul class="list-group">
-          <% @artists.select{ |a, c| c >= 5 }.each do |artist, count| %>
-            <li class="list-group-item">
-              <span class="badge"><%= count %></span>
-              <%= artist %>
-            </li>
-          <% end %>
-        </ul>
-        <div class="panel-body">
-          <p>他にも次のようなアーティストが演奏されています</p>
-          <ul class="list-inline">
-            <% @artists.select{ |a, c| c < 5 }.sample(20).each do |artist, count| %>
-              <li>
-                <%= artist %>
-                <span class="badge"><%= count %></span>
-              </li>
-            <% end %>
-          </ul>
-        </div>
-      </section>
-    </div>
-
-    <div class="col-md-4 col-sm-6">
-      <section class="panel panel-default">
-        <header class="panel-heading">
-          <h2 class="panel-title">バンドの構成人数</h2>
-        </header>
-        <div class="panel-body">
-          <p class="lead">
-            構成人数の平均は
-            <mark><%= (@formations.inject(0) { |sum, (f, c)| sum += f * c } / @count.to_f).round(2) %></mark>
-            人でした
-            <br>
-            一人平均
-            <mark><%= (@member_count.inject(0) { |sum, (m, c)| sum += c } / @member_count.size.to_f).round(2) %></mark>
-            曲を演奏しています
-          </p>
-        </div>
-        <table class="table table-striped">
-          <thead>
-            <tr>
-              <th>人数</th>
-              <th>パーセント</th>
-              <th>曲数</th>
-            </tr>
-          </thead>
-          <tbody>
-            <% @formations.each do |formation, count| %>
-              <tr>
-                <td><%= "#{formation}人" %></td>
-                <td><%= (count / @count.to_f * 100).round(1) %></td>
-                <td><span class="badge"><%= count %></span></td>
-              </tr>
-            <% end %>
-          </tbody>
-        </table>
-      </section>
-    </div>
+    <%= render "instruments", title: "演奏された楽器",
+      instruments: Playing.resolve_insts(@playings.count_insts) %>
+    <%= render "artists", title: "カバーしたアーティスト",
+      artists: @songs.group(:artist).count.sort { |(k1, v1), (k2, v2)| v2 <=> v1 } %>
+    <%= render "formations", title: "バンドの構成人数",
+      formations: Playing.count_formation(@playings.count_members_per_song),
+      total: @songs.count %>
   </div>
 </article>

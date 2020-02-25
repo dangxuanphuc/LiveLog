@@ -5,7 +5,7 @@
     <%= f.text_field :inst, class: "form-control", placeholder: "Gt&Vo" %>
   </div>
   <div class="col-sm-6">
-    <%= f.collection_select :user_id, @users, :id, :full_name, {}, {class: "select2 form-control"} %>
+    <%= f.collection_select :user_id, @users, :id, :full_name, {}, class: "select2 form-control" %>
   </div>
   <div class="col-sm-1">
     <%= content_tag :button,

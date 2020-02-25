@@ -1,12 +1,9 @@
 <tr>
   <% if show_live %>
-    <td><%= song.live.title %></td>
+    <td><%= link_to song.live.title, song.live %></td>
   <% end %>
-  <td>
-    <%= song.time_str unless song.time.blank? %>
-    <%= song.order %>
-  </td>
-  <td><%= logged_in? ? link_to(song.name, song) : song.name %></td>
+  <td><%= song.time_order %></td>
+  <td><%= can_watch?(song) ? link_to(song.name, song) : song.name %></td>
   <td><%= song.artist %></td>
   <td>
     <ul class="list-inline">

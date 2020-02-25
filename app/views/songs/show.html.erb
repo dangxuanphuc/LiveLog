@@ -1,47 +1,65 @@
-<% provide :title, @song.name %>
+<% provide :title, "#{@song.name} | #{@song.live.title}" %>
 <article>
   <header class="page-header">
     <h2>
-      <%= "#{@song.name} / #{@song.artist}" %>
-      <small>
-        <%= link_to @song.live.title, @song.live %>
-        <%= '-' unless @song.order.blank? %>
-        <%= @song.time_str unless @song.time.blank? %>
-        <%= @song.order %>
-        <%= render "link_to_edit", song: @song %>
-      </small><br>
+      <%= @song.title %>
+      <small><%= render "link_to_edit", song: @song %></small><br>
     </h2>
-    <% if @song.youtube_id.blank? %>
-      <ul id="player-list" class="list-inline">
-        <%= render @song.playings %>
-      </ul>
-    <% else %>
-      <div class="row">
-        <div class="col-sm-9">
-          <div class="embed-responsive embed-responsive-16by9">
-            <%= @song.youtube_embed %>
-          </div>
-        </div>
-        <div class="col-sm-3">
-          <ul id="player-list" class="list-unstyled">
-            <%= render @song.playings %>
-          </ul>
-        </div>
+  </header>
+  <ol class="breadcrumb">
+    <li><%= link_to "Live List", lives_path %></li>
+    <li><%= link_to @song.live.title, @song.live %></li>
+    <li class="active"><%= "#{@song.time_order} #{@song.name}" %></li>
+  </ol>
+  <div class="row">
+    <% unless @song.youtube_id.blank? %>
+      <div class="col-sm-12 col-md-9">
+        <p class="embed-responsive embed-responsive-16by9">
+          <%= @song.youtube_embed %>
+        </p>
       </div>
     <% end %>
-    <nav>
-      <ul class="pager">
-        <li class="previous <%= @song.previous.nil? ? 'disabled' : '' %>">
-          <%= link_to @song.previous do %>
-            <span>&larr; Previous</span>
-          <% end %>
-        </li>
-        <li class="next <%= @song.next.nil? ? 'disabled' : '' %>">
-          <%= link_to @song.next do %>
-            <span>Next &rarr;</span>
-          <% end %>
-        </li>
+    <%= render "panel", title: "Members" do %>
+      <ul class="list-group">
+        <%= render @song.playings, klass: "list-group-item" %>
       </ul>
-    </nav>
-  </header>
+    <% end %>
+    <% if logged_in? && current_user.played?(@song) %>
+      <%= render "panel", title: "Edit" do %>
+        <div class="panel-body">
+          <%= form_for @song, remote: true do |f| %>
+            <div class="form-group">
+              <%= f.label :status %>
+              <%= f.select :status, {"Private": "secret", "Closed": "closed", "Public": "open"}, {}, class: "form-control" %>
+            </div>
+            <div class="form-group">
+              <%= f.label :comment %>
+              <%= f.text_area :comment, class: "form-control", rows: 3 %>
+            </div>
+            <%= f.submit "Save", class: "btn btn-primary" %>
+          <% end %>
+        </div>
+      <% end %>
+    <% elsif !@song.comment.blank? %>
+      <%= render "panel", title: "Comments" do %>
+        <div class="panel-body">
+          <p><%= @song.comment %></p>
+        </div>
+      <% end %>
+    <% end %>
+  </div>
+  <nav>
+    <ul class="pager">
+      <li class="previous <%= @song.previous.nil? ? 'disabled' : '' %>">
+        <%= link_to @song.previous do %>
+          <span>&larr; Previous</span>
+        <% end %>
+      </li>
+      <li class="next <%= @song.next.nil? ? 'disabled' : '' %>">
+        <%= link_to @song.next do %>
+          <span>Next &rarr;</span>
+        <% end %>
+      </li>
+    </ul>
+  </nav>
 </article>

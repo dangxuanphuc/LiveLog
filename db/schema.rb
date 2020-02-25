@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_02_04_074307) do
+ActiveRecord::Schema.define(version: 2020_02_04_090919) do
 
   create_table "lives", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
     t.string "name"
@@ -42,6 +42,8 @@ ActiveRecord::Schema.define(version: 2020_02_04_074307) do
     t.bigint "live_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "status", default: 1
+    t.text "comment"
     t.index ["live_id"], name: "index_songs_on_live_id"
   end
 
