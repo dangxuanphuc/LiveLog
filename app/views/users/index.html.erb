@@ -2,7 +2,18 @@
 <header class="page-header">
   <h2>Members</h2>
 </header>
-<% @years.each_slice(4) do |four_y| %>
+<% if logged_in? %>
+  <aside class="form-inline">
+    <div class="checkbox">
+      <label>
+        <%= check_box_tag :active, true, false, checked: params[:active] == 'true',
+          onchange: "location.href='#{request.path}?active=' + $(this).is(':checked');" %>
+        1年以内にライブに出演したメンバーのみ表示
+      </label>
+    </div>
+  </aside>
+<% end %>
+<% @users.distinct_joined.each_slice(4) do |four_y| %>
   <div class="row">
     <% four_y.each do |y| %>
       <div class="col-sm-3">
@@ -15,4 +26,7 @@
       </div>
     <% end %>
   </div>
+<% end %>
+<% if logged_in? %>
+  <p>* 印が付いているメンバーは管理者です。</p>
 <% end %>

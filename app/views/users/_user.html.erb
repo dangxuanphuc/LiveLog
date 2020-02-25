@@ -1,7 +1,7 @@
 <li>
   <%= link_to user do %>
     <%= user.full_name(logged_in?) %>
-    <% if user.admin? %>
+    <% if logged_in? && user.admin? %>
       <span>*</span>
     <% end %>
   <% end %>

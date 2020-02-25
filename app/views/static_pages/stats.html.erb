@@ -7,7 +7,7 @@
     </h1>
   </header>
   <% if logged_in? %>
-    <aside class="form-inline well well-sm">
+    <aside class="form-inline">
       <%= select_tag :y,
         options_for_select(Live.years, selected: params[:y]),
         class: "form-control",
