@@ -1,0 +1,23 @@
+<%= render "panel", title: title do %>
+  <div class="panel-body">
+    <p class="lead">
+      <mark><%= artists.size %></mark>
+      組のアーティストの曲が演奏されました
+      <p>特に次のアーティストが人気です</p>
+      <ul class="list-group">
+        <% artists.select{ |a, c| c >= 5 }.each do |artist, count| %><% end %>
+      </ul>
+      <div class="panel-body">
+        <p>他にも次のようなアーティストが演奏されています</p>
+        <ul class="list-inline">
+          <% artists.select{ |a, c| c < 5 }.sample(20).each do |artist, count| %>
+            <li>
+              <%= artist %>
+              <span class="badge badge-primary"><%= count %></span>
+            </li>
+          <% end %>
+        </ul>
+      </div>
+    </p>
+  </div>
+<% end %>

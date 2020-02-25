@@ -10,6 +10,10 @@ class Live < ApplicationRecord
     "#{date.year} #{name}"
   end
 
+  def Live.years
+    Live.all.select(:date).map(&:nendo).uniq
+  end
+
   def nendo
     if date.mon < 4
       date.year - 1

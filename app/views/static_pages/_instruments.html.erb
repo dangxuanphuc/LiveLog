@@ -1,0 +1,16 @@
+<%= render "panel", title: title do %>
+  <div class="panel-body">
+    <p class="lead">
+      <mark><%= instruments.size %></mark>
+      種類の楽器が演奏されました
+    </p>
+    <ul class="list-inline lead">
+      <% instruments.each do |inst, count| %>
+        <li>
+          <%= inst %>
+          <span class="badge badge-primary"><%= count %></span>
+        </li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>

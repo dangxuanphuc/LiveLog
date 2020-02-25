@@ -31,7 +31,7 @@
   <%= render "panel", title: "アーティスト" do %>
     <ul class="list-group">
       <% @user.songs.unscope(:order).group(:artist).count.sort { |(k1, v1), (k2, v2)| v2 <=> v1 }.take(20).each do |artist, count| %>
-        <% if count >= 2 && !artist.blank? %>
+        <% if count >= 2 && (count.to_f / total) >= 0.04 && !artist.blank? %>
           <li class="list-group-item">
             <span class="badge badge-primary"><%= count %></span>
             <%= artist %>
@@ -44,8 +44,8 @@
     <div class="panel-body">
       <mark><%= @playings.group(:user).count.size - 1 %></mark>人
       <ul class="list-group">
-        <% @playings.group(:user).count.sort{ |(k1, v1), (k2, v2)| v2 <=> v1 }.drop(1).take(20).each do |user, count| %>
-          <% if count >= 2 && ((count.to_f / total) >= 0.2 || count > 10) %>
+        <% @playings.group(:user).count.sort{ |(k1, v1), (k2, v2)| v2 <=> v1 }.take(20).each do |user, count| %>
+          <% if user != @user && count >= 2 && ((count.to_f / total) >= 0.2 || count >= 10) %>
             <li class="list-group-item">
               <span class="badge badge-primary"><%= count %></span>
               <%= link_to user.full_name(logged_in?), user %>

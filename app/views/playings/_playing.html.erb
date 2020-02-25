@@ -1,4 +1,4 @@
-<li>
+<li class="<%= local_assigns.fetch(:klass, '') %>">
   <%= playing.inst + "." unless playing.inst.blank? %>
   <%= logged_in? ? link_to(playing.user.handle, playing.user) : playing.user.handle %>
 </li>

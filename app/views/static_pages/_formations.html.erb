@@ -1,0 +1,27 @@
+<%= render "panel", title: title do %>
+  <div class="panel-body">
+    <p class="lead">
+      構成人数の平均は
+      <mark><%= (formations.inject(0) { |sum, (f, c)| sum += f * c } / total.to_f).round(2) %></mark>
+      人でした
+    </p>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>人数</th>
+          <th>割合</th>
+          <th>曲数</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% formations.each do |formation, count| %>
+          <tr>
+            <td><%= "#{formation}人" %></td>
+            <td><%= (count / total.to_f * 100).round(1) %></td>
+            <td><span class="badge"><%= count %></span></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+<% end %>

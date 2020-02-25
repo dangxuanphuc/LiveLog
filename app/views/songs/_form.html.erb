@@ -1,11 +1,19 @@
-<%= form_for(@song, html: {class: "form-horizontal well"}) do |f| %>
+<%= form_for(@song, html: {class: "form-horizontal"}) do |f| %>
   <%= render "shared/error_messages", object: f.object %>
-  <div class="form-group">
-    <%= f.label :live_id, class: "col-sm-3 control-label" %>
-    <div class="col-sm-9">
-      <%= f.collection_select :live_id, Live.all, :id, :title, {}, {class: "form-control"} %>
+  <% if current_user.admin? %>
+    <div class="form-group">
+      <%= f.label :live_id, class: "col-sm-3 control-label" %>
+      <div class="col-sm-9">
+        <%= f.collection_select :live_id, Live.all, :id, :title, {}, class: "form-control" %>
+      </div>
     </div>
-  </div>
+    <div class="form-group">
+      <%= f.label :youtube_id, class: "col-sm-3 control-label" %>
+      <div class="col-sm-9">
+        <%= f.text_field :youtube_id, value: @song.youtube_url, class: "form-control", placeholder: "https://www.youtube.com/watch?v=sSbqm7ZK_9s" %>
+      </div>
+    </div>
+  <% end %>
   <div class="form-group">
     <%= f.label :order, class: "col-sm-3 control-label" %>
     <div class="col-sm-9">
@@ -32,12 +40,6 @@
       <%= f.text_field :artist, class: "form-control", placeholder: "Eric Clapton" %>
     </div>
   </div>
-  <div class="form-group">
-    <%= f.label :youtube_id, class: "col-sm-3 control-label" %>
-    <div class="col-sm-9">
-      <%= f.text_field :youtube_id, class: "form-control", value: @song.youtube_url, placeholder: "https://www.youtube.com/watch?v=5Vr1vcsO1qI" %>
-    </div>
-  </div>
   <div id="playings-fields">
     <%= f.fields_for :playings do |builder| %>
       <%= render "playings_fields", f: builder %>
@@ -48,6 +50,20 @@
       <%= button_to_add_member glyphicon("plus"), f %>
     </div>
   </div>
+  <% if current_user.played?(@song) %>
+    <div class="form-group">
+      <%= f.label :status, class: "col-sm-3 control-label" %>
+      <div class="col-sm-9">
+        <%= f.select :status, {"Private": "secret", "Closed": "closed", "Public": "open"}, {}, class: "form-control" %>
+      </div>
+    </div>
+    <div class="form-group">
+      <%= f.label :comment, class: "col-sm-3 control-label" %>
+      <div class="col-sm-9">
+        <%= f.text_area :comment, class: "form-control", rows: 3 %>
+      </div>
+    </div>
+  <% end %>
   <div class="form-group">
     <div class="col-sm-offset-3 col-sm-9">
       <%= f.submit yield(:button_text), class: "btn btn-primary" %>
