@@ -5,6 +5,6 @@
   <% if song.open? %>
     <%= glyphicon(:globe) %>
   <% elsif song.secret? %>
-    <%= glyphicon("eye-slash") %>
+    <%= glyphicon(:lock) %>
   <% end %>
 <% end %>
