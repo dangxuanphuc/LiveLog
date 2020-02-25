@@ -12,7 +12,7 @@
     <ol id="set-list">
       <% @songs.each do |song| %>
         <li>
-          <%= logged_in? ? link_to(song.name, song) : song.name %>
+          <%= can_watch?(song) ? link_to(song.name, song) : song.name %>
           <%= "/ #{song.artist}" %>
           <%= render "songs/link_to_edit", song: song %>
           <ul class="list-inline">

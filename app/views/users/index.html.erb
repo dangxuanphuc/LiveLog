@@ -12,6 +12,8 @@
       </label>
     </div>
   </aside>
+<% else %>
+  <p>プロフィールを公開しているメンバーの一覧です。</p>
 <% end %>
 <% @users.distinct_joined.each_slice(4) do |four_y| %>
   <div class="row">
