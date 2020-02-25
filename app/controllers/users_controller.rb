@@ -1,12 +1,22 @@
 class UsersController < ApplicationController
-  before_action :logged_in_user, only: %i(index edit update destroy)
+  before_action :logged_in_user, except: %i(index show)
+  before_action :check_public, only: :show
   before_action :find_user, except: %i(new create index)
   before_action :correct_user, only: %i(edit update)
   before_action :admin_or_elder_user, only: %i(destroy)
 
   def index
-    @users = User.all.page(params[:page]).per Settings.size_page_max_length
-    @years = @users.distinct_joined
+    if logged_in?
+      if params[:active] = "true"
+        today = Date.today
+        range = (today - 1.year..today)
+        @users = User.includes(songs: :live).where("lives.date": range)
+      else
+        @user = User.all
+      end
+    else
+      @users = User.where(public: true)
+    end
   end
 
   def new
@@ -71,5 +81,9 @@ class UsersController < ApplicationController
 
   def correct_user
     redirect_to root_path unless @user.current_user? current_user
+  end
+
+  def check_public
+    redirect_to root_path unless logged_in? || @user.public?
   end
 end

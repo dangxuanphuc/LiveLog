@@ -50,14 +50,16 @@
   </div>
   <nav>
     <ul class="pager">
-      <li class="previous <%= @song.previous.nil? ? 'disabled' : '' %>">
-        <%= link_to @song.previous do %>
-          <span>&larr; Previous</span>
+      <% p = @song.previous(logged_in?) %>
+      <li class="previous <%= p.nil? ? 'disabled' : '' %>">
+        <%= link_to p do %>
+          <span aria-hidden="true">&larr; </span>Previous
         <% end %>
       </li>
-      <li class="next <%= @song.next.nil? ? 'disabled' : '' %>">
-        <%= link_to @song.next do %>
-          <span>Next &rarr;</span>
+      <% n = @song.next(logged_in?) %>
+      <li class="next <%= n.nil? ? 'disabled' : '' %>">
+        <%= link_to n do %>
+          Next<span aria-hidden="true"> &rarr;</span>
         <% end %>
       </li>
     </ul>

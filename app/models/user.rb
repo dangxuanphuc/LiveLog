@@ -29,7 +29,7 @@ class User < ApplicationRecord
     allow_blank: true
 
   default_scope { order("joined DESC") }
-  scope :distinct_joined, -> { unscoped.select(:joined).distinct.order(joined: :desc).pluck(:joined) }
+  scope :distinct_joined, -> { unscope(:order).select(:joined).distinct.order(joined: :desc).pluck(:joined) }
 
   has_secure_password
 

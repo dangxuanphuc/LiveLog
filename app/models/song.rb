@@ -61,11 +61,21 @@ class Song < ApplicationRecord
     "#{time_str} #{order}"
   end
 
-  def previous
-    Song.where("lives.id = ? AND (songs.order < ? OR songs.time < ?)", live.id, order, time).last unless order.blank?
+  def previous logged_in = false
+    return nil if order.blank?
+
+    allowed_statuses = logged_in ? [Song.statuses[:open], Song.statuses[:closed]] : [Song.statuses[:open]]
+    Song.where(live: live, status: allowed_statuses)
+      .where('(songs.order < ? OR songs.time < ?) AND songs.youtube_id IS NOT NULL', order, time)
+      .last
   end
 
-  def next
-    Song.where("lives.id = ? AND (songs.order > ? OR songs.time > ?)", live.id, order, time).first unless order.blank?
+  def next logged_in = true
+    return nil if order.blank?
+
+    allowed_statuses = logged_in ? [Song.statuses[:open], Song.statuses[:closed]] : [Song.statuses[:open]]
+    Song.where(live: live, status: allowed_statuses)
+      .where('(songs.order > ? OR songs.time > ?) AND songs.youtube_id IS NOT NULL', order, time)
+      .first
   end
 end

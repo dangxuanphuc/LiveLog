@@ -2,16 +2,20 @@
 <% total = @user.songs.count %>
 <header class="page-header">
   <div class="float-right">
-    <% if logged_in? && !@user.activated? %>
-      <%= link_to glyphicon(:envelope) + "招待する", new_user_activations_path(@user), class: "btn btn-info btn-lg" %>
-      <% if current_user.admin_or_elder? && !@user.songs.exists? %>
-        <%= link_to glyphicon(:trash) + "Delete", @user, method: :delete, class: "btn btn-danger" %>
-      <% end %>
+    <% if logged_in? %>
+        <% if current_user.admin_or_elder? && !@user.songs.exists? %>
+          <%= link_to glyphicon(:trash) + 'Delete', @user, method: :delete, class: 'btn btn-danger' %>
+        <% elsif current_user.admin? && current_user != @user %>
+          <% if @user.admin? %>
+            <%= link_to 'Remove role admin', user_admin_path(@user), method: :delete, data: {confirm: 'Are you sure?'}, class: 'btn btn-danger' %>
+          <% else %>
+            <%= link_to 'Set role admin', user_admin_path(@user), method: :post, data: {confirm: 'Are you sure?'}, class: 'btn btn-primary' %>
+          <% end %>
+        <% end %>
     <% end %>
   </div>
   <h2><%= @user.full_name(logged_in?) %></h2>
 </header>
-
 <div class="row">
   <%= render "panel", title: "出演数・楽器" do %>
     <div class="panel-body text-center lead">
@@ -48,7 +52,7 @@
           <% if user != @user && count >= 2 && ((count.to_f / total) >= 0.2 || count >= 10) %>
             <li class="list-group-item">
               <span class="badge badge-primary"><%= count %></span>
-              <%= link_to user.full_name(logged_in?), user %>
+              <%= logged_in? || user.public? ? link_to(user.full_name(logged_in?), user) : user.handle %>
             </li>
           <% end %>
         <% end %>
