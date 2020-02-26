@@ -1,6 +1,19 @@
 <% provide :title, @live.title %>
 <article>
   <header class="page-header">
+    <% if logged_in? && current_user.admin_or_elder? %>
+      <ul class="float-right list-inline">
+        <li><%= link_to glyphicon("plus-circle") + "Add song",
+          new_song_path(live_id: @live.id), class: "btn btn-primary",
+          role: "button" %></li>
+        <li><%= link_to glyphicon(:edit) + "Edit", edit_life_path(@live),
+          class: "btn btn-warning", role: "button" %></li>
+        <% if @songs.empty? %>
+          <li><%= link_to glyphicon(:trash) + "Delete", @live,
+            method: :delete, class: "btn btn-danger", role: "button" %></li>
+        <% end %>
+      </ul>
+    <% end %>
     <h2>
       <%= @live.name %>
       <small><%= "#{I18n.l(@live.date)} @#{@live.place}" %></small>
@@ -21,18 +34,5 @@
         </li>
       <% end %>
     </ol>
-  <% end %>
-  <% if logged_in? && current_user.admin_or_elder? %>
-    <footer>
-      <ul class="list-inline">
-        <li><%= link_to glyphicon("plus-sign") + "Add song", new_song_path(live_id: @live.id),
-          class: "btn btn-default", role: "button" %></li>
-        <li><%= link_to glyphicon(:edit) + "Edit", edit_life_path(@live), class: "btn btn-primary", role: "button" %></li>
-        <% if @songs.empty? %>
-          <li><%= link_to glyphicon(:trash) + "Delete", @live, method: :delete,
-            class: "btn btn-danger", role: "button" %></li>
-        <% end %>
-      </ul>
-    </footer>
   <% end %>
 </article>

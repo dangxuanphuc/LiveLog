@@ -67,8 +67,7 @@ class Song < ApplicationRecord
 
     allowed_statuses = logged_in ? [Song.statuses[:open], Song.statuses[:closed]] : [Song.statuses[:open]]
     Song.where(live: live, status: allowed_statuses)
-      .where('(songs.order < ? OR songs.time < ?) AND songs.youtube_id IS NOT NULL', order, time)
-      .last
+      .where("(songs.order < ? OR songs.time < ?) AND NOT (songs.youtube_id IS NULL OR songs.youtube_id = '')", order, time).last
   end
 
   def next logged_in = true
@@ -76,7 +75,6 @@ class Song < ApplicationRecord
 
     allowed_statuses = logged_in ? [Song.statuses[:open], Song.statuses[:closed]] : [Song.statuses[:open]]
     Song.where(live: live, status: allowed_statuses)
-      .where('(songs.order > ? OR songs.time > ?) AND songs.youtube_id IS NOT NULL', order, time)
-      .first
+      .where("(songs.order > ? OR songs.time > ?) AND NOT (songs.youtube_id IS NULL OR songs.youtube_id = '')", order, time).first
   end
 end
