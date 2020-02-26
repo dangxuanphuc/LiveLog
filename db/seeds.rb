@@ -13,8 +13,8 @@ User.create!(first_name: "Phuc",
   furigana: "wataridori",
   nickname: "wataridori",
   email: "admin@livelog.com",
-  password: "admin000",
-  password_confirmation: "admin000",
+  password: "admin123",
+  password_confirmation: "admin123",
   admin: true,
   joined: nendo(Date.today)-1,
   activated: true,
@@ -27,10 +27,10 @@ puts "Faker is generating data ... Please wait..."
   last_name = Faker::Name.last_name
   furigana = Faker::Name.middle_name
   nickname = Faker::Name.female_first_name
-  email = "user-#{n+1}@livelog.com"
-  password = "123456"
+  email = "user-#{n+1}@gmail.com"
+  password = "A123456"
   url = "https://user-#{n+1}.livelog.com"
-  intro = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris gravida tortor sed felis lacinia consectetur."
+  intro = Faker::Lorem.paragraph(sentence_count: 2, supplemental: false, random_sentences_to_add: 4)
   User.create!(first_name: first_name,
     last_name: last_name,
     furigana: furigana,

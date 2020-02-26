@@ -43,7 +43,7 @@
     <% elsif !@song.comment.blank? %>
       <%= render "panel", title: "Comments" do %>
         <div class="panel-body">
-          <p><%= @song.comment %></p>
+          <%= simple_format(@song.comment) %>
         </div>
       <% end %>
     <% end %>

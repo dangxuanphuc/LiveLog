@@ -36,47 +36,49 @@
       <% end %>
     </ul>
   <% end %>
-  <%= render "panel", title: "アーティスト" do %>
-    <ul class="list-group">
-      <% @user.songs.unscope(:order).group(:artist).count.sort { |(k1, v1), (k2, v2)| v2 <=> v1 }.take(20).each do |artist, count| %>
-        <% if count >= 2 && (count.to_f / total) >= 0.04 && !artist.blank? %>
-          <li class="list-group-item">
-            <span class="badge badge-primary"><%= count %></span>
-            <%= artist %>
-          </li>
-        <% end %>
-      <% end %>
-    </ul>
-  <% end %>
-  <%= render "panel", title: "共演者" do %>
-    <div class="panel-body">
-      <mark><%= @playings.group(:user).count.size - 1 %></mark>人
+  <% unless total == 0 %>
+    <%= render 'panel', title: 'アーティスト' do %>
       <ul class="list-group">
-        <% @playings.group(:user).count.sort{ |(k1, v1), (k2, v2)| v2 <=> v1 }.take(20).each do |user, count| %>
-          <% if user != @user && count >= 2 && ((count.to_f / total) >= 0.2 || count >= 10) %>
+        <% @user.songs.unscope(:order).group(:artist).count.sort { |(k1, v1), (k2, v2)| v2 <=> v1 }.take(20).each do |artist, count| %>
+          <% if count >= 2 && (count.to_f / total) >= 0.04 && !artist.blank? %>
             <li class="list-group-item">
               <span class="badge badge-primary"><%= count %></span>
-              <%= logged_in? || user.public? ? link_to(user.full_name(logged_in?), user) : user.handle %>
+              <%= artist %>
             </li>
           <% end %>
         <% end %>
       </ul>
-    </div>
-  <% end %>
-  <%= render "panel", title: "構成人数" do %>
-    <ul class="list-group">
-      <%= sum = 0 %>
-      <% Playing.count_formation(@playings.count_members_per_song).each do |formation, count| %>
-        <li class="list-group-item">
-          <span class="badge badge-primary"><%= count %></span>
-          <%= "#{formation}人" %>
-        </li>
-        <% sum += formation * count %>
-      <% end %>
-    </ul>
-    <div class="panel-body">
-      平均<%= (sum.to_f / total).round(2) %>人
-    </div>
+    <% end %>
+    <%= render "panel", title: "共演者" do %>
+      <div class="panel-body">
+        <mark><%= @playings.group(:user).count.size - 1 %></mark>人
+        <ul class="list-group">
+          <% @playings.group(:user).count.sort{ |(k1, v1), (k2, v2)| v2 <=> v1 }.take(20).each do |user, count| %>
+            <% if user != @user && count >= 2 && ((count.to_f / total) >= 0.2 || count >= 10) %>
+              <li class="list-group-item">
+                <span class="badge badge-primary"><%= count %></span>
+                <%= logged_in? || user.public? ? link_to(user.full_name(logged_in?), user) : user.handle %>
+              </li>
+            <% end %>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+    <%= render "panel", title: "構成人数" do %>
+      <ul class="list-group">
+        <% sum = 0 %>
+        <% Playing.count_formation(@playings.count_members_per_song).each do |formation, count| %>
+          <li class="list-group-item">
+            <span class="badge badge-primary"><%= count %></span>
+            <%= "#{formation}人" %>
+          </li>
+          <% sum += formation * count %>
+        <% end %>
+      </ul>
+      <div class="panel-body">
+        平均<%= (sum.to_f / total).round(2) %>人
+      </div>
+    <% end %>
   <% end %>
   <div class="col-xs-12 col-sm-6 col-md-4">
     <section class="panel panel-default">
@@ -94,7 +96,7 @@
             <dd><%= link_to @user.url, @user.url, target: "_blank" %></dd>
           <% end %>
         </dl>
-        <p><%= @user.intro %></p>
+        <%= simple_format(@user.intro) %>
       </div>
     </section>
   </div>
