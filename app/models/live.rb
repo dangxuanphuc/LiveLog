@@ -4,13 +4,13 @@ class Live < ApplicationRecord
   validates :name, presence: true, uniqueness: {scope: :date}
   validates :date, presence: true
 
-  default_scope { order(date: :desc) }
+  scope :order_by_date, -> { order(date: :desc) }
 
   def title
     "#{date.year} #{name}"
   end
 
-  def Live.years
+  def self.years
     Live.all.select(:date).map(&:nendo).uniq
   end
 

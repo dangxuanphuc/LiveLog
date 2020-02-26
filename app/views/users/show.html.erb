@@ -42,7 +42,7 @@
   <% unless total == 0 %>
     <%= render 'panel', title: 'アーティスト' do %>
       <ul class="list-group">
-        <% @user.songs.unscope(:order).group(:artist).count.sort { |(k1, v1), (k2, v2)| v2 <=> v1 }.take(20).each do |artist, count| %>
+        <% @user.songs.group(:artist).count.sort { |(k1, v1), (k2, v2)| v2 <=> v1 }.take(20).each do |artist, count| %>
           <% if count >= 2 && (count.to_f / total) >= 0.04 && !artist.blank? %>
             <li class="list-group-item">
               <span class="badge badge-primary"><%= count %></span>

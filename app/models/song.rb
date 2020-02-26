@@ -7,8 +7,7 @@ class Song < ApplicationRecord
         (?:www\.youtube\.com/watch\?(?:\S*&)*v=
           |youtu\.be/)
         (?<id>\S{11})
-      )?
-      (?<id>\S{11})
+      )
     )x
 
   enum status: {
@@ -24,22 +23,25 @@ class Song < ApplicationRecord
 
   validates :live_id, presence: true
   validates :name, presence: true
-  validates :youtube_id, format: {with: VALID_YOUTUBE_REGEX}, allow_blank: true
+  validates :youtube_id, format: {with: VALID_YOUTUBE_REGEX},
+    allow_blank: true
   before_save :extract_youtube_id
 
-  default_scope { order(:time, :order) }
-  scope :order_by_live, -> { unscope(:order).includes(:live).order("lives.date DESC", :time, :order) }
+  scope :played_order, -> { order(:time, :order) }
+  scope :order_by_live, lambda {
+    includes(:live).order("lives.date DESC", :time, :order)
+  }
 
-  def Song.search query, page
+  def self.search query, page
     q = "%#{query}%"
-    where("songs.name ILIKE ? OR artist ILIKE ?", q, q).order_by_live.paginate(page: page)
+    order_by_live.where("songs.name ILIKE ? OR artist ILIKE ?", q, q)
+      .paginate(page: page)
   end
 
   def extract_youtube_id
-    unless youtube_id.blank?
-      m = youtube_id.match(VALID_YOUTUBE_REGEX)
-      self.youtube_id = m[:id]
-    end
+    return if youtube_id.blank?
+    m = youtube_id.match(VALID_YOUTUBE_REGEX)
+    self.youtube_id = m[:id]
   end
 
   def title
@@ -65,7 +67,11 @@ class Song < ApplicationRecord
   def previous logged_in = false
     return nil if order.blank?
 
-    allowed_statuses = logged_in ? [Song.statuses[:open], Song.statuses[:closed]] : [Song.statuses[:open]]
+    allowed_statuses = if logged_in
+                         [Song.statuses[:open], Song.statuses[:closed]]
+                       else
+                         [Song.statuses[:open]]
+                       end
     Song.where(live: live, status: allowed_statuses)
       .where("(songs.order < ? OR songs.time < ?) AND NOT (songs.youtube_id IS NULL OR songs.youtube_id = '')", order, time).last
   end
@@ -73,7 +79,11 @@ class Song < ApplicationRecord
   def next logged_in = true
     return nil if order.blank?
 
-    allowed_statuses = logged_in ? [Song.statuses[:open], Song.statuses[:closed]] : [Song.statuses[:open]]
+    allowed_statuses = if logged_in
+                         [Song.statuses[:open], Song.statuses[:closed]]
+                       else
+                         [Song.statuses[:open]]
+                       end
     Song.where(live: live, status: allowed_statuses)
       .where("(songs.order > ? OR songs.time > ?) AND NOT (songs.youtube_id IS NULL OR songs.youtube_id = '')", order, time).first
   end

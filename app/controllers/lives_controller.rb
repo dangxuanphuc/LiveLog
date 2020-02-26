@@ -1,14 +1,14 @@
 class LivesController < ApplicationController
-  before_action :set_live, only: %i(show edit update destroy)
-  before_action :logged_in_user, except: %i(index show)
-  before_action :admin_or_elder_user, except: %i(index show)
+  before_action :set_live, only: %i[show edit update destroy]
+  before_action :logged_in_user, except: %i[index show]
+  before_action :admin_or_elder_user, except: %i[index show]
 
   def index
-    @lives = Live.all
+    @lives = Live.order_by_date
   end
 
   def show
-    @songs = @live.songs
+    @songs = @live.songs.played_order
   end
 
   def new
@@ -48,8 +48,7 @@ class LivesController < ApplicationController
   end
 
   def destroy
-    begin
-      @live.destroy
+    @live.destroy
     rescue ActiveRecord::DeleteRestrictionError => e
       flash.now[:danger] = e.message
       render :show

@@ -4,7 +4,7 @@
     <div class="form-group">
       <%= f.label :live_id, class: "col-sm-3 control-label" %>
       <div class="col-sm-9">
-        <%= f.collection_select :live_id, Live.all, :id, :title, {}, class: "form-control" %>
+        <%= f.collection_select :live_id, Live.order_by_date, :id, :title, {}, class: "form-control" %>
       </div>
     </div>
     <div class="form-group">

@@ -21,9 +21,7 @@
       <div class="col-sm-3">
         <h2><%= y %></h2>
         <ol>
-          <% @users.where(joined: y).each do |u| %>
-            <%= render @users.where(joined: y) %>
-          <% end %>
+          <%= render @users.select { |u| u.joined == y } %>
         </ol>
       </div>
     <% end %>

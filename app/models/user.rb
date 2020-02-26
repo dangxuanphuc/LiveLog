@@ -3,6 +3,7 @@ class User < ApplicationRecord
 
   attr_reader :remember_token
   attr_accessor :activation_token, :reset_token
+
   before_save :email_downcase
   before_save :remove_spaces_from_furigana
   before_create :create_activation_digest
@@ -22,22 +23,30 @@ class User < ApplicationRecord
     format: {with: VALID_EMAIL_REGEX},
     uniqueness: {case_sensitive: false}, allow_nil: true
   validates :joined, presence: true,
-    numericality: {greater_than: Settings.year_joined}
+    numericality: {
+      only_integer: true,
+      greater_than: Settings.year_joined,
+      less_than_or_equal_to: Date.today.year
+    }
   validates :password, presence: true,
     length: {minimum: Settings.password_min_length}, allow_nil: true
   validates :url, format: /\A#{URI::regexp(%w(http https))}\z/,
     allow_blank: true
 
-  default_scope { order("joined DESC") }
-  scope :distinct_joined, -> { unscope(:order).select(:joined).distinct.order(joined: :desc).pluck(:joined) }
+  scope :natural_order, -> { order("joined DESC") }
+  scope :distinct_joined, lambda {
+    unscope(:order).select(:joined).distinct.order(joined: :desc).pluck(:joined)
+  }
 
   has_secure_password
 
   def full_name logged_in = true
-    if logged_in
-      nickname.blank? ? "#{last_name} #{first_name}" : "#{last_name} #{first_name} (#{nickname})"
+    return handle unless logged_in
+
+    if nickname.blank?
+      "#{last_name} #{first_name}"
     else
-      handle
+      "#{last_name} #{first_name} (#{nickname})"
     end
   end
 
