@@ -13,14 +13,15 @@ The [Ruby on Rails](https://rubyonrails.org/) application for set list managemen
 ## Development
 
 ### Clone the repository
-
-  $ git clone https://github.com/sankichi92/LiveLog.git
-  $ cd LiveLog
-
+```
+  $ git clone https://github.com/dangxuanphuc/livelog.git
+  $ cd livelog
+```
 ### Setup or update your development environment
-
+```
   $ bin/setup
-
+```
 ### Run the app in your local web server
-
+```
   $ bin/rails server
+```
