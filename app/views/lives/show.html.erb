@@ -8,7 +8,7 @@
           role: "button" %></li>
         <li><%= link_to glyphicon(:edit) + "Edit", edit_life_path(@live),
           class: "btn btn-warning", role: "button" %></li>
-        <% if @songs.empty? %>
+        <% if @live.songs.empty? %>
           <li><%= link_to glyphicon(:trash) + "Delete", @live,
             method: :delete, class: "btn btn-danger", role: "button" %></li>
         <% end %>
@@ -19,17 +19,17 @@
       <small><%= "#{I18n.l(@live.date)} @#{@live.place}" %></small>
     </h2>
   </header>
-  <% if @songs.count > 20 %>
+  <% if @live.songs.count > 20 %>
     <%= render "songs/songs_table", songs: @songs, show_live: false %>
   <% else %>
     <ol id="set-list">
-      <% @songs.each do |song| %>
+      <% @live.songs.includes(playings: :user).played_order.each do |song| %>
         <li>
           <%= can_watch?(song) ? link_to(song.name, song) : song.name %>
           <%= "/ #{song.artist}" %>
           <%= render "songs/link_to_edit", song: song %>
           <ul class="list-inline">
-            <%= render song.playings.order_by_inst %>
+            <%= render sort_by_inst(song.playings) %>
           </ul>
         </li>
       <% end %>

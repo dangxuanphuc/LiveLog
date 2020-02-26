@@ -34,12 +34,13 @@ class Song < ApplicationRecord
 
   def self.search query, page
     q = "%#{query}%"
-    order_by_live.where("songs.name ILIKE ? OR artist ILIKE ?", q, q)
-      .paginate(page: page)
+    where("songs.name ILIKE ? OR artist ILIKE ?", q, q)
+      .order_by_live.paginate(page: page)
   end
 
   def extract_youtube_id
     return if youtube_id.blank?
+
     m = youtube_id.match(VALID_YOUTUBE_REGEX)
     self.youtube_id = m[:id]
   end

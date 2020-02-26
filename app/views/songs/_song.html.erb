@@ -7,7 +7,7 @@
   <td><%= song.artist %></td>
   <td>
     <ul class="list-inline">
-      <%= render song.playings.order_by_inst %>
+      <%= render sort_by_inst(song.playings) %>
     </ul>
   </td>
   <td><%= render "songs/link_to_edit", song: song %></td>

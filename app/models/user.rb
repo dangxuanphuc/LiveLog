@@ -67,7 +67,7 @@ class User < ApplicationRecord
   end
 
   def played? song
-    songs.include? song
+    playings.map(&:song_id).include?(song.id)
   end
 
   def remember
