@@ -16,7 +16,7 @@
           <%= "/ #{song.artist}" %>
           <%= render "songs/link_to_edit", song: song %>
           <ul class="list-inline">
-            <%= render song.playings %>
+            <%= render song.playings.order_by_inst %>
           </ul>
         </li>
       <% end %>

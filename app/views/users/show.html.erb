@@ -102,4 +102,4 @@
   </div>
 </div>
 
-<%= render "songs/songs_table", songs: @user.songs, show_live: true %>
+<%= render "songs/songs_table", songs: @user.songs.order_by_live, show_live: true %>

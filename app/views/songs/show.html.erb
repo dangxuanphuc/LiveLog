@@ -21,7 +21,7 @@
     <% end %>
     <%= render "panel", title: "Members" do %>
       <ul class="list-group">
-        <%= render @song.playings, klass: "list-group-item" %>
+        <%= render @song.playings.order_by_inst, klass: "list-group-item" %>
       </ul>
     <% end %>
     <% if logged_in? && current_user.played?(@song) %>
