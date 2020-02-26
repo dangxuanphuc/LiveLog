@@ -63,7 +63,7 @@ lives = Live.order(:created_at).take(5)
   name = Faker::Music.album
   artist = Faker::Artist.name
   youtube_id = "https://www.youtube.com/watch?v=5Vr1vcsO1qI"
-  order = 5
+  order = Faker::Number.decimal_part(digits: 2)
   time = Date.today
   lives.each { |live| live.songs.create!(name: name,
     artist: artist,

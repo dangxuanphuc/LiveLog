@@ -1,6 +1,6 @@
 class Playing < ApplicationRecord
-  # danh sach viet tat cac nhac cu
-  INST_ORDER = %w(Vo Vn Sax Fl Tp Gt Pf Ba Cj Perc)
+  # list order of instruments
+  INST_ORDER = %w(Vo Vn Vc Fl Cl Sax Tp Hr Tb Harp Gt Koto Pf Acc 鍵ハ Ba Cj Dr Bongo Perc)
 
   belongs_to :user
   belongs_to :song

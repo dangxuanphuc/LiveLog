@@ -1,24 +1,26 @@
-# README
+# LiveLog
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+The [Ruby on Rails](https://rubyonrails.org/) application for set list management of the acoustic light music club.
 
-Things you may want to cover:
+## Requirements
 
-* Ruby version
+- [Ruby](https://www.ruby-lang.org/) 2.7.0
+- [Node.js](https://nodejs.org/) & [Yarn](https://yarnpkg.com/)
+- [MySQL](https://www.mysql.com/)
+- [Elasticsearch](https://www.elastic.co/guide/en/elasticsearch/) 6.x
+- [ImageMagick](https://imagemagick.org/)
 
-* System dependencies
+## Development
 
-* Configuration
+### Clone the repository
 
-* Database creation
+  $ git clone https://github.com/sankichi92/LiveLog.git
+  $ cd LiveLog
 
-* Database initialization
+### Setup or update your development environment
 
-* How to run the test suite
+  $ bin/setup
 
-* Services (job queues, cache servers, search engines, etc.)
+### Run the app in your local web server
 
-* Deployment instructions
-
-* ...
+  $ bin/rails server
