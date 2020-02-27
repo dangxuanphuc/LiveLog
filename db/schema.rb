@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_02_04_090919) do
+ActiveRecord::Schema.define(version: 2020_02_27_035525) do
 
   create_table "lives", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
     t.string "name"
@@ -67,6 +67,7 @@ ActiveRecord::Schema.define(version: 2020_02_04_090919) do
     t.boolean "public", default: false
     t.string "url"
     t.text "intro"
+    t.string "api_digest"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["furigana"], name: "index_users_on_furigana"
   end

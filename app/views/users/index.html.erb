@@ -5,7 +5,7 @@
 <aside class="form-inline">
   <div class="checkbox">
     <label>
-      <%= check_box_tag :active, true, false, checked: params[:active] == 'true',
+      <%= check_box_tag :active, true, false, checked: params[:active] == "true",
         onchange: "location.href='#{request.path}?active=' + $(this).is(':checked');" %>
       1年以内にライブに出演したメンバーのみ表示
     </label>
