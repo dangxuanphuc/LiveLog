@@ -2,9 +2,7 @@
   <table class="table table-striped table-condensed">
     <thead>
       <tr>
-        <% if show_live %>
-          <th>Live</th>
-        <% end %>
+        <th>Live</th>
         <th>#</th>
         <th>Song</th>
         <th>Artist</th>
@@ -13,7 +11,11 @@
       </tr>
     </thead>
     <tbody>
-      <%= render songs, show_live: show_live %>
+      <% songs.each do |song| %>
+        <% cache_unless logged_in?, song do %>
+          <%= render song %>
+        <% end %>
+      <% end %>
     </tbody>
   </table>
 </div>

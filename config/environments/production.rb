@@ -19,7 +19,34 @@ Rails.application.configure do
 
   config.log_tags = [ :request_id ]
 
+  if ENV["MEMCACHEDCLOUD_SERVERS"]
+    config.cache_store = :dalli_store,
+      ENV["MEMCACHEDCLOUD_SERVERS"].split(","),
+      {
+        username: ENV["MEMCACHEDCLOUD_USERNAME"],
+        password: ENV["MEMCACHEDCLOUD_PASSWORD"]
+      }
+  end
+
   config.action_mailer.perform_caching = false
+
+  config.action_mailer.raise_delivery_errors = true
+
+  config.action_mailer.delivery_method = :smtp
+
+  host = "livelogapp.herokuapp.com"
+
+  config.action_mailer.default_url_options = {host: host}
+
+  config.action_mailer.smtp_settings = {
+    address: "smtp.gmail.com",
+    port: "587",
+    authentication: :plain,
+    user_name: ENV["GMAIL_USERNAME"],
+    password: ENV["GMAIL_PASSWORD"],
+    domain: "gmail.com",
+    enable_starttls_auto: true
+  }
 
   config.i18n.fallbacks = true
 

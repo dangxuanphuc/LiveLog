@@ -8,6 +8,7 @@ gem "bootsnap", ">= 1.4.2", require: false
 gem "bootstrap"
 gem "bootstrap4-kaminari-views"
 gem "config"
+gem "dalli"
 gem "faker"
 gem "figaro"
 gem "font_awesome5_rails"

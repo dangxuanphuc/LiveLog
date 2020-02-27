@@ -17,7 +17,11 @@
       <div class="col-sm-3">
         <h2><%= y %></h2>
         <ol>
-          <%= render @users.select { |u| u.joined == y } %>
+          <% @users.select { |u| u.joined == y }.each do |user| %>
+            <% cache_unless logged_in?, user do %>
+              <%= render user %>
+            <% end %>
+          <% end %>
         </ol>
       </div>
     <% end %>
