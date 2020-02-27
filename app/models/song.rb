@@ -16,7 +16,7 @@ class Song < ApplicationRecord
     open: 2
   }
 
-  belongs_to :live
+  belongs_to :live, touch: true
   has_many :playings, dependent: :destroy, inverse_of: :song
   has_many :users, through: :playings
   accepts_nested_attributes_for :playings, allow_destroy: true

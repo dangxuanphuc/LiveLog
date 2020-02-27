@@ -1,7 +1,5 @@
 <tr>
-  <% if show_live %>
-    <td><%= link_to song.live.title, song.live %></td>
-  <% end %>
+  <td><%= link_to song.live.title, song.live %></td>
   <td><%= song.time_order %></td>
   <td><%= can_watch?(song) ? link_to(song.name, song) : song.name %></td>
   <td><%= song.artist %></td>

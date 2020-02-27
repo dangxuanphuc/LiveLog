@@ -105,4 +105,5 @@
   </div>
 </div>
 
-<%= render "songs/songs_table", songs: @user.songs.order_by_live.includes(playings: :user), show_live: true %>
+<%= render "songs/songs_table",
+  songs: @user.songs.order_by_live.includes(playings: :user) %>
