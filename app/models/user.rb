@@ -2,7 +2,7 @@ class User < ApplicationRecord
   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-]+(\.[a-z\d\-]+)*\.[a-z]+\z/i
 
   attr_reader :remember_token
-  attr_accessor :activation_token, :reset_token, :api_token
+  attr_accessor :activation_token, :reset_token
 
   before_save :email_downcase
   before_save :remove_spaces_from_furigana
@@ -10,6 +10,7 @@ class User < ApplicationRecord
 
   has_many :playings, dependent: :restrict_with_exception
   has_many :songs, through: :playings
+  has_many :tokens, dependent: :destroy
 
   validates :first_name, presence: true,
     length: {maximum: Settings.firstname_max_length}
@@ -116,13 +117,14 @@ class User < ApplicationRecord
     reset_sent_at < Settings.hours_max.hours.ago
   end
 
-  def create_api_token
-    self.api_token = User.new_token
-    update_attribute(api_digest: User.digest(api_token))
+  def valid_token? token
+    digests = tokens.pluck(:digest)
+    digests.any? { |d| BCrypt::Password.new(d).is_password?(token) }
   end
 
-  def destroy_api_token
-    update_attribute(api_digest: nil)
+  def destroy_token token
+    token = tokens.find { |t| BCrypt::Password.new(t.digest).is_password?(token) }
+    token.destroy if token
   end
 
   class << self
@@ -135,8 +137,8 @@ class User < ApplicationRecord
       BCrypt::Password.create(string, cost: cost)
     end
 
-    def new_token urlsafe: true
-      urlsafe ? SecureRandom.urlsafe_base64 : SecureRandom.base64
+    def new_token
+      SecureRandom.urlsafe_base64
     end
   end
 

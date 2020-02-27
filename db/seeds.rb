@@ -22,7 +22,7 @@ User.create!(first_name: "Phuc",
 
 puts "Faker is generating data ... Please wait..."
 
-19.times do |n|
+20.times do |n|
   first_name = Faker::Name.first_name
   last_name = Faker::Name.last_name
   furigana = Faker::Name.middle_name
@@ -57,7 +57,6 @@ puts "Create #{User.count} users!"
 end
 puts "Create #{Live.count} lives!"
 
-users = User.order(:created_at).take(5)
 lives = Live.order(:created_at).take(5)
 21.times do |n|
   name = Faker::Music.album
@@ -69,10 +68,18 @@ lives = Live.order(:created_at).take(5)
     artist: artist,
     youtube_id: youtube_id,
     order: order,
-    time: time,
-    playings_attributes: users.map { |p|
-      {user_id: User.find_by(furigana: p.kana, joined: nendo(Date.today)).id,
-      inst: n}}) }
+    time: time
+  )}
 end
 puts "Create #{Song.count} songs!"
+
+insts = %w[Vo Vn Vla Vc Fl Cl Sax Tp Hr Tb Harp Gt Koto Pf Acc 鍵ハ Ba Cj Dr Bongo Perc]
+21.times do |n|
+  inst = insts[n]
+  user_id = Faker::Number.within(range: 1..20)
+  song_id = Faker::Number.within(range: 1..50)
+  Playing.create!(inst: inst,
+    user_id: user_id,
+    song_id: song_id)
+end
 puts "Create #{Playing.count} playings!"
