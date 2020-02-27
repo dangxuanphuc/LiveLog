@@ -20,7 +20,7 @@
     </h2>
   </header>
   <% if @live.songs.count > 20 %>
-    <%= render "songs/songs_table", songs: @songs, show_live: false %>
+    <%= render "songs/songs_table", songs: @live.songs.includes(playings: :user).played_order, show_live: false %>
   <% else %>
     <ol id="set-list">
       <% @live.songs.includes(playings: :user).played_order.each do |song| %>

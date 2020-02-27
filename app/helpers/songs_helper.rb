@@ -2,7 +2,7 @@ module SongsHelper
   # list order of instruments
   INST_ORDER = %w[Vo Vn Vc Fl Cl Sax Tp Hr Tb Harp Gt Koto Pf Acc 鍵ハ Ba Cj Dr Bongo Perc].freeze
 
-  def sort_by_inst playings
+  def sort_by_inst(playings)
     playings.sort do |p1, p2|
       inst_order(p1.inst) <=> inst_order(p2.inst)
     end

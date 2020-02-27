@@ -8,7 +8,7 @@ class LivesController < ApplicationController
   end
 
   def show
-    @live = Live.includes(songs: %i[playings users]).find(params[:id])
+    @live = Live.includes(:songs).find(params[:id])
   end
 
   def new
@@ -55,7 +55,6 @@ class LivesController < ApplicationController
     else
       flash[:success] = "Delete live successfully!"
       redirect_to lives_path
-    end
   end
 
   private

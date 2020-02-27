@@ -2,19 +2,15 @@
 <header class="page-header">
   <h2>Members</h2>
 </header>
-<% if logged_in? %>
-  <aside class="form-inline">
-    <div class="checkbox">
-      <label>
-        <%= check_box_tag :active, true, false, checked: params[:active] == 'true',
-          onchange: "location.href='#{request.path}?active=' + $(this).is(':checked');" %>
-        1年以内にライブに出演したメンバーのみ表示
-      </label>
-    </div>
-  </aside>
-<% else %>
-  <p>プロフィールを公開しているメンバーの一覧です。</p>
-<% end %>
+<aside class="form-inline well well-sm">
+  <div class="checkbox">
+    <label>
+      <%= check_box_tag :active, true, false, checked: params[:active] == 'true',
+        onchange: "location.href='#{request.path}?active=' + $(this).is(':checked');" %>
+      1年以内にライブに出演したメンバーのみ表示
+    </label>
+  </div>
+</aside>
 <% @users.distinct_joined.each_slice(4) do |four_y| %>
   <div class="row">
     <% four_y.each do |y| %>
