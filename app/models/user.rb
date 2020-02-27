@@ -2,7 +2,7 @@ class User < ApplicationRecord
   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-]+(\.[a-z\d\-]+)*\.[a-z]+\z/i
 
   attr_reader :remember_token
-  attr_accessor :activation_token, :reset_token
+  attr_accessor :activation_token, :reset_token, :api_token
 
   before_save :email_downcase
   before_save :remove_spaces_from_furigana
@@ -114,6 +114,15 @@ class User < ApplicationRecord
 
   def password_reset_expired?
     reset_sent_at < Settings.hours_max.hours.ago
+  end
+
+  def create_api_token
+    self.api_token = User.new_token
+    update_attribute(api_digest: User.digest(api_token))
+  end
+
+  def destroy_api_token
+    update_attribute(api_digest: nil)
   end
 
   class << self

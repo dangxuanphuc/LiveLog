@@ -20,7 +20,8 @@ Rails.application.routes.draw do
       resources :users, only: %i[index show], path: :members
       resources :lives, only: %i[index show]
       resources :songs, only: %i[index show]
-      resource :token, only: :create
+      post "/login", to: "tokens#create"
+      delete "/logout", to: "tokens#destroy"
     end
   end
 end
