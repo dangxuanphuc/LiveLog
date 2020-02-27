@@ -1,5 +1,7 @@
 # LiveLog
 
+[![Build Status](https://travis-ci.org/dangxuanphuc/livelog.svg?branch=master)](https://travis-ci.org/dangxuanphuc/livelog)
+
 The [Ruby on Rails](https://rubyonrails.org/) application for set list management of the acoustic light music club.
 
 ## Requirements
