@@ -41,11 +41,15 @@ class User < ApplicationRecord
 
   has_secure_password
 
+  def formal_name
+    "#{last_name} #{first_name}"
+  end
+
   def full_name logged_in = true
     return handle unless logged_in
 
     if nickname.blank?
-      "#{last_name} #{first_name}"
+      formal_name
     else
       "#{last_name} #{first_name} (#{nickname})"
     end

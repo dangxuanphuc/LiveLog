@@ -4,10 +4,9 @@ class SongsController < ApplicationController
   before_action :correct_user, only: %i[edit update]
   before_action :admin_or_elder_user, only: %i[new create destroy]
   before_action :store_referer, only: :edit
-  before_action :set_users, only: %i[new create edit update]
 
   def index
-    @songs = Song.includes(playings: :user).search(params[:q], params[:page])
+    @songs = Song.visible.includes(playings: :user).search(params[:q], params[:page])
   end
 
   def new
@@ -64,10 +63,6 @@ class SongsController < ApplicationController
 
   def store_referer
     session[:forwarding_url] = request.referer || root_path
-  end
-
-  def set_users
-    @users = User.natural_order
   end
 
   def correct_user

@@ -9,6 +9,7 @@ class Live < ApplicationRecord
     allow_blank: true
 
   scope :order_by_date, -> { order(date: :desc) }
+  scope :visible, -> { where("date < ?", Date.today + 1.week) }
 
   def title
     "#{date.year} #{name}"

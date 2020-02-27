@@ -31,6 +31,7 @@ class Song < ApplicationRecord
   scope :order_by_live, lambda {
     includes(:live).order("lives.date DESC", :time, :order)
   }
+  scope :visible, -> { where("lives.date < ?", Date.today + 1.week) }
 
   def self.search query, page
     q = "%#{query}%"

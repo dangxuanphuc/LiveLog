@@ -5,12 +5,12 @@
       <%= @live.name %>
       <small>
         <%= " #{I18n.l(@live.date)} @#{@live.place}" %>
-        <% if logged_in? && @live.album_url.present?
+        <% if logged_in? && @live.album_url.present? %>
           <%= link_to glyphicon(:image), @live.album_url,
-            class: "float-right btn btn-primary btn-lg", target: "_blank",
-            data: { toggle: "tooltip", placement: "top" },
+            class: "float-right btn btn-primary btn-lg",
+            data: { toggle: "tooltip", target: "_blank", placement: "top" },
             title: "持っている写真を共有しよう！" %>
-        <% end
+        <% end %>
       </small>
     </h2>
   </header>
