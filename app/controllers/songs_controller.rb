@@ -1,7 +1,6 @@
 class SongsController < ApplicationController
-  before_action :find_song, only: %i[edit update destroy]
+  before_action :find_song, only: %i[show edit update destroy]
   before_action :logged_in_user, except: %i[index show]
-  before_action :check_status, only: :show
   before_action :correct_user, only: %i[edit update]
   before_action :admin_or_elder_user, only: %i[new create destroy]
   before_action :store_referer, only: :edit
@@ -56,7 +55,7 @@ class SongsController < ApplicationController
   private
 
   def find_song
-    @song = Song.find_by id: params[:id]
+    @song = Song.includes(playings: :user).find_by id: params[:id]
 
     return if @song
     flash[:danger] = "Cannot find this song"
@@ -79,14 +78,5 @@ class SongsController < ApplicationController
 
   def correct_user
     redirect_to root_path unless current_user.played?(@song) || current_user.admin_or_elder?
-  end
-
-  def check_status
-    @song = Song.includes(playings: :user).find(params[:id])
-    if @song.closed?
-      logged_in_user
-    elsif @song.secret?
-      redirect_to root_path unless logged_in? && current_user.played?(@song)
-    end
   end
 end

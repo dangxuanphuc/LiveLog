@@ -12,7 +12,7 @@
     <li class="active"><%= "#{@song.time_order} #{@song.name}" %></li>
   </ol>
   <div class="row">
-    <% unless @song.youtube_id.blank? %>
+    <% if can_watch?(@song) %>
       <div class="col-sm-12 col-md-9">
         <p class="embed-responsive embed-responsive-16by9">
           <%= @song.youtube_embed %>

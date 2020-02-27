@@ -1,6 +1,6 @@
 module SongsHelper
   # list order of instruments
-  INST_ORDER = %w[Vo Vn Vc Fl Cl Sax Tp Hr Tb Harp Gt Koto Pf Acc 鍵ハ Ba Cj Dr Bongo Perc].freeze
+  INST_ORDER = %w[Vo Vn Vla Vc Fl Cl Sax Tp Hr Tb Harp Gt Koto Pf Acc 鍵ハ Ba Cj Dr Bongo Perc].freeze
 
   def sort_by_inst(playings)
     playings.sort do |p1, p2|
@@ -9,7 +9,7 @@ module SongsHelper
   end
 
   def can_watch? song
-    (logged_in? && current_user.played?(song)) || (song.open? || song.closed? && logged_in?) && !song.youtube_id.blank?
+    !song.youtube_id.blank? && (song.open? || song.closed? && logged_in? || logged_in? && current_user.played?(song))
   end
 
   def can_edit? song
