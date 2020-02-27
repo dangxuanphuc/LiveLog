@@ -37,6 +37,7 @@
           </a>
           <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
             <%= link_to glyphicon(:user) + "Profile", current_user, class: "dropdown-item" %>
+            <%= link_to glyphicon(:comment) + 'Report', feedback_url(current_user), target: '_blank', class: "dropdown-item" %>
             <%= link_to glyphicon(:cog) + "Settings", edit_user_path(current_user), class: "dropdown-item" %>
             <%= link_to glyphicon("sign-out-alt") + "Logout", logout_path, class: "dropdown-item", method: :delete %>
           </div>

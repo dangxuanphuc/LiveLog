@@ -1,18 +1,18 @@
 <header class="jumbotron">
   <div class="row">
-    <div class="col-sm-4">
+    <div class="col-lg-4 col-md-6">
       <%= image_tag "logo.png", alt: "LiveLog logo", class: "img-responsive center-block" %>
     </div>
-    <div class="col-sm-8 text-center">
+    <div class="col-lg-8 col-md-6 text-center">
       <h2>LiveLog</h2>
       <p>
         京都大学を中心に活動するアコースティック軽音サークル<br>
         「<a href="http://ku-unplugged.net/" target="_blank">京大アンプラグド</a>」のセットリスト検索システムです。
       </p>
       <%= render "songs/search_form" %>
+      <p>
+        <a href="#"><img src="https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png" alt="Get It On Google Play" width="160"></a>
+      </p>
     </div>
   </div>
 </header>
-<%= render "songs/songs_table", songs: @songs %>
-
-<%= paginate @songs, theme: "twitter-bootstrap-4" %>

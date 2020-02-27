@@ -3,7 +3,14 @@
   <h2>Song Search</h2>
 </header>
 <%= render "search_form" %>
-<p class="text-right">
-  <%= page_entries_info %>
-</p>
-<%= render "songs/songs_table", songs: @songs %>
+<% if @songs.present? %>
+  <p class="text-right">
+    <%= page_entries_info %>
+  </p>
+  <%= render "songs/songs_table", songs: @songs %>
+  <%= paginate @songs, theme: "twitter-bootstrap-4" %>
+<% else %>
+  <div class="alert alert-danger" role="alert">
+    <strong><%= params[:q] %></strong>に一致する曲は見つかりませんでした。
+  </div>
+<% end %>

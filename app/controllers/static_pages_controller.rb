@@ -1,9 +1,5 @@
 class StaticPagesController < ApplicationController
-  def home
-    @songs = Song.all.order_by_live.includes(playings: :user)
-      .page(params[:page])
-      .per Settings.size_page_max_length
-  end
+  def home; end
 
   def stats
     if params[:y]
