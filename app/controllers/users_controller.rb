@@ -1,7 +1,7 @@
 class UsersController < ApplicationController
   before_action :logged_in_user, except: %i[index show]
   before_action :check_public, only: :show
-  before_action :find_user, except: %i[new create index]
+  before_action :find_user, only: %i[edit update destroy]
   before_action :correct_user, only: %i[edit update]
   before_action :admin_or_elder_user, only: :destroy
 
@@ -79,6 +79,7 @@ class UsersController < ApplicationController
   end
 
   def check_public
+    @user = User.includes(songs: :live).find(params[:id])
     redirect_to root_path unless logged_in? || @user.public?
   end
 end
