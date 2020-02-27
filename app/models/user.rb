@@ -51,7 +51,7 @@ class User < ApplicationRecord
   end
 
   def kana
-    furigana.gsub(/\s+/, '')
+    furigana.gsub(/\s+/, "")
   end
 
   def handle
@@ -126,8 +126,8 @@ class User < ApplicationRecord
       BCrypt::Password.create(string, cost: cost)
     end
 
-    def new_token
-      SecureRandom.urlsafe_base64
+    def new_token urlsafe: true
+      urlsafe ? SecureRandom.urlsafe_base64 : SecureRandom.base64
     end
   end
 
@@ -143,6 +143,6 @@ class User < ApplicationRecord
   end
 
   def remove_spaces_from_furigana
-    self.furigana = furigana.gsub(/\s+/, '')
+    self.furigana = furigana.gsub(/\s+/, "")
   end
 end
