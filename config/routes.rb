@@ -10,8 +10,8 @@ Rails.application.routes.draw do
   resources :users, path: :members do
     resource :admin, only: %i(create destroy)
   end
+  resources :songs
   resources :lives
   resources :account_activations, only: :edit
   resources :password_resets, only: %i(new create edit update)
-  resources :songs
 end
