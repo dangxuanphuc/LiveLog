@@ -1,24 +1,32 @@
 <% provide :title, @live.title %>
 <article>
   <header class="page-header">
-    <% if logged_in? && current_user.admin_or_elder? %>
-      <ul class="float-right list-inline">
-        <li><%= link_to glyphicon("plus-circle") + "Add song",
-          new_song_path(live_id: @live.id), class: "btn btn-primary",
-          role: "button" %></li>
-        <li><%= link_to glyphicon(:edit) + "Edit", edit_life_path(@live),
-          class: "btn btn-warning", role: "button" %></li>
-        <% if @live.songs.empty? %>
-          <li><%= link_to glyphicon(:trash) + "Delete", @live,
-            method: :delete, class: "btn btn-danger", role: "button" %></li>
-        <% end %>
-      </ul>
-    <% end %>
     <h2>
       <%= @live.name %>
-      <small><%= "#{I18n.l(@live.date)} @#{@live.place}" %></small>
+      <small>
+        <%= " #{I18n.l(@live.date)} @#{@live.place}" %>
+        <% if logged_in? && @live.album_url.present?
+          <%= link_to glyphicon(:image), @live.album_url,
+            class: "float-right btn btn-primary btn-lg", target: "_blank",
+            data: { toggle: "tooltip", placement: "top" },
+            title: "持っている写真を共有しよう！" %>
+        <% end
+      </small>
     </h2>
   </header>
+  <% if logged_in? && current_user.admin_or_elder? %>
+    <ul class="float-right list-inline">
+      <%= link_to glyphicon("plus-circle") + "Add song",
+        new_song_path(live_id: @live.id), class: "btn btn-primary",
+        role: "button" %>
+      <%= link_to glyphicon(:edit) + "Edit", edit_life_path(@live),
+        class: "btn btn-warning", role: "button" %>
+      <% if @live.songs.empty? %>
+        <%= link_to glyphicon(:trash) + "Delete", @live,
+          method: :delete, class: "btn btn-danger", role: "button" %>
+      <% end %>
+    </ul>
+  <% end %>
   <% if @live.songs.count > 20 %>
     <div class="table-responsive">
       <table id="songs" class="table table-striped table-condensed">

@@ -31,18 +31,12 @@ class SongsController < ApplicationController
   def edit; end
 
   def update
-    respond_to do |format|
       if @song.update song_params
-        format.html do
-          flash[:success] = "Update song successfully!"
-          redirect_back_or @song
-        end
-        format.js { flash.now[:success] = "Updated song status successfully!" }
+        flash[:success] = "Update song successfully!"
+        redirect_back_or @song
       else
-        format.html { render :edit }
-        format.js { flash.now[:danger] = @song.errors.full_messages }
+        render :edit
       end
-    end
   end
 
   def destroy

@@ -1,24 +1,13 @@
 <% provide :title, @user.full_name(logged_in?) %>
 <% total = @user.songs.count %>
 <header class="page-header">
-  <% if logged_in? %>
-    <div class="float-right list-inline">
-      <% if current_user.admin_or_elder? && !@user.songs.exists? %>
-        <li><%= link_to glyphicon(:trash) + "Delete", @user, method: :delete, class: "btn btn-danger" %></li>
-      <% elsif current_user.admin? && current_user != @user %>
-        <% if @user.admin? %>
-          <li><%= link_to "Remove role admin", user_admin_path(@user), method: :delete, data: {confirm: "Are you sure?"}, class: "btn btn-danger" %></li>
-        <% else %>
-          <li><%= link_to "Set role admin", user_admin_path(@user), method: :post, data: {confirm: "Are you sure?"}, class: "btn btn-primary" %></li>
-        <% end %>
-      <% end %>
-    </div>
-  <% end %>
   <h2><%= @user.full_name(logged_in?) %>
     <% if logged_in? %>
       <small>
         <%= @user.joined %>
-        <%= @user.public? ? glyphicon(:globe) : glyphicon(:lock) %>
+        <% if !@user.public? %>
+          <%= glyphicon(:lock) %>
+        <% end %>
       </small>
     <% end %>
   </h2>
@@ -107,3 +96,17 @@
 
 <%= render "songs/songs_table",
   songs: @user.songs.order_by_live.includes(playings: :user) %>
+
+<% if logged_in? && current_user.admin? %>
+  <div class="float-right list-inline">
+    <% if current_user.admin_or_elder? && !@user.songs.exists? %>
+      <%= link_to glyphicon(:trash) + "Delete", @user, method: :delete, class: "btn btn-danger" %>
+    <% elsif current_user.admin? && current_user != @user %>
+      <% if @user.admin? %>
+        <%= link_to "Remove role admin", user_admin_path(@user), method: :delete, data: {confirm: "Are you sure?"}, class: "btn btn-danger" %>
+      <% else %>
+        <%= link_to "Set role admin", user_admin_path(@user), method: :post, data: {confirm: "Are you sure?"}, class: "btn btn-primary" %>
+      <% end %>
+    <% end %>
+  </div>
+<% end %>
